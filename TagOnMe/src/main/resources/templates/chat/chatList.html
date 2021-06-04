@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" >
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" th:href="@{/css/chat.css}" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet" />
+
+<meta charset="UTF-8">
+<title>채팅 상대 선택</title>
+</head>
+<script type="text/javascript" th:inline="javascript">
+
+var ws;
+$(document).ready(function(){
+	 getRoom();
+	 moveDm();
+});	
+	/* function createRoom(){
+		$("#createRoom").click(function(){
+			var msg = {	roomName : $('#roomName').val()	};
+	
+			commonAjax('/createRoom', msg, 'post', function(result){
+				createChatingRoom(result);
+			});
+	
+			$("#roomName").val("");
+		});
+	} */
+	
+	function getRoom(){
+		var usession = [[${me}]];
+		console.log("로그인한 아이디 : " + usession);
+		
+		commonAjax('/getRoom', "", 'post', function(result){
+			createChatingRoom(result);
+		});
+	}
+	
+	 function moveDm(){
+		$("#moveDmChating").click(function(){
+			console.log("채팅방 생성");
+			var msg = {	nickName: $('#nickName').val()	};
+	
+			commonAjax('/createDmRoom', 'msg', 'post', function(result){
+				createChatingRoom(result);
+			});
+		});
+	} 
+	
+	
+	/* function moveDmChating(){
+		$("#moveDmChating").click(function(){
+			console.log("버튼 클릭됨");
+			var nickName = [[${nickName}]];		//user의 닉네임
+			var userRoomNumber = d.userRoomNumber;	//방의 번호
+			var userId = d.userId;					//user의 아이디
+			var me = d.me;							//나의 아이디		
+			
+			location.href="/moveDmChating?userId="+userId+"&"+"me="+me+"&"+"userRoomNumber="+userRoomNumber;
+			
+		});
+	} */
+	
+	
+	/* function moveDmChating(r){
+		if(r != null){
+			r.forEach(function(d, idx){
+				var nickName = d.nickName;	//user의 닉네임
+				var userRoomNumber = d.userRoomNumber;	//방의 번호
+				var userId = d.userId;		//user의 아이디
+				var me = d.me;						//나의 아이디	
+				
+				
+			});
+			location.href="/moveDmChating?userId="+userId+"&"+"me="+me+"&"+"userRoomNumber="+userRoomNumber;
+		}
+	}
+	
+	 */
+	function createChatingRoom(r){
+		if(r != null){
+			var tag = "<tr><th class='num'>순서</th><th class='room'>방 이름</th><th class='go'></th></tr>";
+			[].forEach.call(r, function(data, idx){
+				var nickName = data.nickName;
+				var userRoomNumber = data.userRoomNumber;
+				var userId = data.userId;
+				var me = data.me;
+				tag += "<tr>"+
+							"<td class='num'>"+(idx+1)+"</td>"+
+							"<td class='room'>"+ nickName +"</td>"+
+							"<td class='go'><button type='button' onclick='goRoom(\""+userRoomNumber+"\", \""+userId+"\", \""+me+"\")'>입장</button></td>" +
+						"</tr>";	
+			});
+			$("#userRoomList").empty().append(tag);
+		}
+	} 
+	
+	function goRoom(userRoomNumber, userId, me){
+		location.href="/moveDmChating?userId="+userId+"&"+"me="+me+"&"+"userRoomNumber="+userRoomNumber;
+	}
+	
+	function commonAjax(url, parameter, type, calbak, contentType){
+		$.ajax({
+			url: url,
+			data: parameter,
+			type: type,
+			contentType : contentType!=null?contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+			success: function (r) {
+				calbak(r);
+			},
+			error : function(err){
+				console.log('error');
+				calbak(err);
+			}
+		});
+	}
+
+</script>
+<body>
+<input type="button" id="moveDmChating" value="user1">
+<a href="#">user2</a>
+<a href="#">user3</a>
+
+<div class="inbox_chat" id="userRoomList">
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link
+		href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+		rel="stylesheet"
+		integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+		crossorigin="anonymous">
+		
+	<title>Tag on me!</title>
+	<script src="/js/vivagraph.js"></script>
+	<script th:inline="javascript">
+
+    
+
+</script>
+
+
+	<script type='text/javascript' th:inline="javascript">
+            function onLoad() {
+            	
+                 var tagMap = function(){
+				
+                   var data = {
+                   	// 네임 배열
+                    "nodes":[
+							{"tags":"필통","tagCount":1},
+							{"tags":"가죽 필통","tagCount":2},
+							{"tags":"저렴이","tagCount":3},
+							{"tags":"나이키","tagCount":4},
+							{"tags":"아디다스","tagCount":5},
+							{"tags":"나이키광고","tagCount":7},
+							{"tags":"광고","tagCount":8},
+							{"tags":"운동화","tagCount":0},
+							{"tags":"안경","tagCount":1},
+							{"tags":"수첩","tagCount":3},
+							{"tags":"책","tagCount":2},
+							{"tags":"텀블러","tagCount":4},
+							{"tags":"포크","tagCount":5},
+							{"tags":"샐러드","tagCount":6},
+							{"tags":"로션","tagCount":7},
+							{"tags":"모니터","tagCount":8},
+							{"tags":"숟가락","tagCount":9},
+							{"tags":"아이폰","tagCount":10},
+							{"tags":"커피","tagCount":11}
+						],
+					"links":[
+						{"source":1,"target":0},
+						{"source":1,"target":2},
+						{"source":1,"target":3},
+						{"source":3,"target":4},
+						{"source":5,"target":9},
+						{"source":9,"target":7},
+						{"source":12,"target":13},
+						{"source":13,"target":14},
+						{"source":12,"target":14},
+						{"source":16,"target":17},
+						{"source":16,"target":18},
+						{"source":19,"target":20},
+						{"source":21,"target":11},
+					]};
+                   /*  var hill = data.findIndex(h=>h.tags == "필통"); */
+                   
+                   console.log(data);
+                    
+                    var g = Viva.Graph.graph();
+                    g.tags = "Sample graph from d3 library";
+
+					// 노드 추가	g.addNode(i, data.nodes[값]);
+					// data의 nodes배열 길이만큼 반복해서 nodes의 값을 노드로 추가함
+                    for (var i = 0; i < data.nodes.length; ++i){
+                        g.addNode(i, data.nodes[i]);						
+                    }
+
+					//source: 시작 노드 target: 종료 노드
+                    for (i = 0; i < data.links.length; ++i){
+                        var link = data.links[i];
+                        g.addLink(link.source, link.target);
+                    }
+
+                    return g;
+                };
+
+                 var colors = [
+	                	 "#393e46", "#00adb5",
+	                     "#aad8d3", "#02475e",
+	                     "#687980", "#f3bda1",
+	                     "#fefecc", "#4b778d",
+	                     "#28b5b5", "#8fd9a8",
+	                     "#d2e69c", "#5b6d5b",
+	                     "#ca8a8b", "#e2bcb7",
+	                     "#bdd2b6", "#a2b29f",
+	                     "#798777", "#e84545",
+	                     "#903749", "#53354a",
+	                     "#e7d9ff"
+                     ];
+
+                 var example = function() {
+                    var graph = tagMap();
+
+                    var layout = Viva.Graph.Layout.forceDirected(graph, {
+                    	springLength : 150,
+                        springCoeff : 0.0005,
+                        dragCoeff : 0.01,
+                        gravity : -1
+                    });
+
+                    var svgGraphics = Viva.Graph.View.svgGraphics();
+                    svgGraphics.node(function(node){
+                        var circle = Viva.Graph.svg('circle')
+                            .attr('r', 35)
+                            .attr('stroke', '#fff')
+                            .attr('stroke-width', '3px')
+
+                        circle.append('title').text(node.data[].nodes[].tags);
+
+                        return circle;
+
+                    }).placeNode(function(nodeUI, pos){
+                        nodeUI.attr( "cx", pos.x).attr("cy", pos.y);
+                    });
+
+                    svgGraphics.link(function(link){
+                        return Viva.Graph.svg('line')
+                                .attr('stroke', '#9d9d9d')
+                                .attr('stroke-width', 2);
+                    });
+
+                    var renderer = Viva.Graph.View.renderer(graph, {
+                        container : document.getElementById('graph1'),
+                        layout : layout,
+                        graphics : svgGraphics,
+                        prerender: 1,
+                        renderLinks : true
+                    });
+
+                    renderer.run(9999999);
+                    /* function generateDOMLabels(graph1) {
+                        // this will map node id into DOM element
+                        var labels = Object.create(null);
+                        graph.forEachNode(function(node) {
+                          var label = document.createElement('span');
+                          label.classList.add('node-label');
+                          label.innerText = node.id;
+                          labels[node.id] = label;
+                          container.appendChild(label);
+                        });
+                        return labels;
+                      } */
+                }();
+                
+            }
+        </script>
+        <style type='text/css'>
+            #graph1{
+                position: absolute;
+                vertical-align:middle;
+                width: 100%;
+                height: 100%;
+            }
+            #graph1 > svg {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+	</head>
+	<body>
+		<!-- top bar -->
+		<nav class="navbar navbar-expand-lg navbar-light"
+			style="box-shadow: 2px 2px 2px #e1e1e1;">
+			<div class="container-fluid">
+				<a class="navbar-brand p-2" href="#">Tag on me</a>
+				<button class="navbar-toggler" type="button"
+					data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+					aria-controls="navbarSupportedContent" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item"><a class="nav-link active"
+							aria-current="page" href="#">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+						<li class="nav-item dropdown"><a
+							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+							role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Dropdown </a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item" href="#">Action</a></li>
+								<li><a class="dropdown-item" href="#">Another action</a></li>
+								<li><hr class="dropdown-divider"></li>
+								<li><a class="dropdown-item" href="#">Something else
+										here</a></li>
+							</ul></li>
+						<li class="nav-item"><a class="nav-link disabled" href="#"
+							tabindex="-1" aria-disabled="true">Disabled</a></li>
+					</ul>
+					<form class="d-flex">
+						<input class="form-control me-2" type="search" placeholder="Search"
+							aria-label="Search">
+						<button class="btn btn-outline-success" type="submit">Search</button>
+					</form>
+				</div>
+			</div>
+		</nav>
+		<!-- top bar end -->
+	
+		<!-- contents -->
+		<div class="p-5" style="margin: 20px 0; width:100%;">
+			<h1 class="p- text-center" style="margin-top: 20px">Hello, Tag on
+				me!</h1>
+			<P class="text-center" style="margin-bottom: 20px">
+				The time on the server is <span th:text="${serverTime}"></span>
+			</P>
+			<div id="tagmap" style='width:100%; height: 500px; position : relative; margin: 70px auto 50px;'>
+				<script type="text/javascript"></script>
+      			<div style='width:100%; height:100%; position:absolute; background:url(../img/andy-holmes-10kjsFg6M4E-unsplash.jpg) top center / cover no-repeat fixed;'>
+          			<div id='graph1' ></div>
+       			</div>
+	    	</div>
+			<a href="/profile/openProfileList.do">프로필</a><br> <a
+				href="/board/list">로그인</a><br> <a href="/uploadForm">회원가입</a><br>
+			<a href="/uploadAjax">게시판</a><br>
+		</div>
+		<!-- contents end -->
+		
+		<!-- bottombar -->
+		<div class="mb-5 container-fluid bg-light p-3 text-center">
+			<hr>
+			<p>만든 사람들 | 이용약관 | 개인정보처리방침</p>
+			<p>ⓒ 2021. 희희낙락</p>
+		</div>
+		<!-- bottombar end -->
+	
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+			crossorigin="anonymous"></script>
+		<script type="text/javascript">
+			onLoad('tagmap');
+		</script>
+	</body>
+</html>
+
+

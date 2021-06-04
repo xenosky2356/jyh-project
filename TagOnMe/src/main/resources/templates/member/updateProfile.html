@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href=https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css rel="stylesheet">
+	<link href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css rel="stylesheet">
+	<title>Tag on me!</title>
+	
+	<!-- Favicons -->
+	  <link href="/bootstrap/assets/img/favicon.png" rel="icon">
+	  <link href="/bootstrap/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+	
+	  <!-- Google Fonts -->
+	  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
+	
+	  <!-- Vendor CSS Files -->
+	  <link href="/bootstrap/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	  <link href="/bootstrap/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+	  <link href="/bootstrap/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+	  <link href="/bootstrap/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+	  <link href="/bootstrap/assets/vendor/venobox/venobox.css" rel="stylesheet">
+	  <link href="/bootstrap/assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+	  <link href="/bootstrap/assets/vendor/aos/aos.css" rel="stylesheet">
+	
+	  <!-- Template Main CSS File -->
+	  <link href="/bootstrap/assets/css/style.css" rel="stylesheet">
+	
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <style>
+		body {
+		    background-color: #FFEBEE;
+			position:relative;
+		}
+		
+		i {
+			color:black;
+		}
+		
+		ul{
+			flex-wrap: wrap;
+			
+    		padding-left: 0.5rem;
+
+		}
+		
+		.flex justify-content-center mt-5{
+			flex-wrap: wrap;
+		}
+		.card {
+		    width: 400px;
+		    border: none;
+		    border-radius: 14px !important
+		}
+		
+		.area1 {
+		    background-color: #97d6fc;
+		    border-top-left-radius: 14px !important;
+		    border-top-right-radius: 14px !important;
+		    padding-top: 83px !important
+		}
+		
+		.image {
+		    top: -62px;
+		}
+		
+		.image img {
+		    box-shadow: 5px 6px 6px 2px #e9ecef;
+			position: absolute;
+			top: 70px;
+			left: 50%;
+			margin-left: -50px;
+		}
+		
+		.area2 {
+		    background-color: #fff;
+		    border-bottom-left-radius: 14px !important;
+		    border-bottom-right-radius: 14px !important;
+			overflow: hidden;
+			margin-top: 42px;
+		}
+		
+		.area2::after{
+			display: table;
+			clear: both;
+			content: "";
+		}
+		
+		.name {
+		    font-size: 25px;
+		    font-weight: 650
+		}
+		
+		.information {
+		    color: #9FA8DA;
+		    font-weight: 500;
+		    font-size: 16px
+		}
+		
+		.list-icons {
+		    color: #C5CAE9
+			flex-wrap: wrap;
+		}
+		
+		.list-icons li {
+		    list-style: none;
+		    border-radius: 10px;
+		    margin: 10px;
+			color: #fff;
+		}
+		
+		
+		.list-icons li i {
+		    font-size: 17px;
+		    
+		}
+		
+		@media (max-width:700px) {
+		    .list-icons {
+		        display: block
+		    }
+		}
+		
+		button{
+			
+			padding: 8px 18px;
+		    border-radius: 10px;
+		    background:#3f729b;
+		    
+		    border:none;
+		}
+		
+		.btn {
+		
+		    width:100px;
+			height:50px;
+		    background: rgba(117,203,255,1);
+			border-radius: 15px;
+		
+		    color:#fff;
+		
+		    padding: 15px 0;
+		
+		    text-align: center;
+		
+		    text-decoration: none;
+		    font-size: 15px;
+		
+		    margin: 4px;
+		
+		    cursor: pointer;
+		
+		}
+		
+		
+		input[type=submit] { 
+		  	width:50px;
+			
+		    background: rgba(117,203,255,1);
+			border-radius: 15px;
+			border:none;
+		    color:#fff;
+		    text-align: center;
+		    text-decoration: none;
+		    font-size: 15px;
+		    cursor: pointer;
+		}
+		
+		li{
+			color:black;
+		}
+		
+		.tags {
+		  margin-bottom: 30px;
+		}
+		
+		.tags ul {
+		  list-style: none;
+		  padding: 0;
+		}
+		
+		.tags ul button {
+		  color: #444;
+		  font-size: 14px;
+		  padding: 6px 14px;
+		  margin: 0 6px 8px ;
+		  border: 1px solid #888;
+		  display: inline-block;
+		  transition: 0.3s;
+		  border-radius: 50px;
+		  background:none;
+		}
+		
+		.tags ul button:hover {
+		  color: #fff;
+		  border: 1px solid #029CEB;
+		  background: #029CEB;
+		}
+		.tags ul .delBtn{
+			border: none;
+		}
+		
+		.tags ul li .delBtn {
+			
+			border: none;
+			background: none;
+		}
+		.tags ul li .delBtn > i:hover {
+			
+			
+		}
+		.tags ul .delBtn i:hover {
+			
+		}
+		.bi-x-circle{
+			pointer-events:none;
+		}
+	</style>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js">
+	
+	</script>
+</head>
+  
+<body> 	
+	<div class="container mt-5 mb-5 d-flex justify-content-center wrap">
+		<div class="card rounded">
+			<div class=" d-block justify-content-center">
+				<div class="area1 p-3 py-5"> </div>
+				<div class="area2 p-12 text-center px-3">
+				    <form id="frm" method="POST" enctype="multipart/form-data">
+						  <label for="formFile" class="form-label">프로필 이미지 파일</label>&nbsp;
+						  <input type="submit" id="success" value="변경완료" style="width:80px;">
+						  <input class="form-control" type="file" id="file" name='file' required />
+						  <input type="hidden" id="uno" name="uno" th:value="${mvo.uno}"/>
+					   		<div class="image mr-3"> 
+					   			<img id="imgView" src="/member/display" onerror="this.src='https://placeimg.com/300/200/animals/sepia'" class="rounded-circle" width="100" height="100"/>
+							</div>
+					</form><!-- form태그 안이나 밖이나 이미지 실시간 변화 없음 -->
+					
+							
+						<br><br><br>
+						
+					<form id="form" method="post">
+						<div class="mb-3">
+						  <label for="formGroupExampleInput" class="form-label">닉네임</label>
+						  <input type="text" class="form-control" id="formGroupExampleInput" name="nickname" th:value="${mvo.nickname}">
+						</div>
+						<div class="mb-3">
+						  <label for="formGroupExampleInput2" class="form-label">소개</label>
+						  <input type="text" class="form-control" id="formGroupExampleInput2" name="introduce" th:value="${mvo.introduce}">
+						</div>
+						
+						<!-- 여기서부터 태그추가 입니다. -->	
+						<label for="exampleDataList" class="form-label">태그 추가</label><br>
+						
+						<select class="form-control-ajax sel">
+						  <option value="" ></option>
+						  <option th:each="tvo : ${tvo}" th:text="${tvo.tags}" th:value="${tvo.tno}" style="color:black;"></option>
+						</select>
+						<input type="hidden" name="tags"><!-- 임시 -->
+						<input type="hidden" name="tno">
+						
+						<button type="button" class="btn btn-secondary" id="insertTag" name="insertTag">추가</button>
+						
+						<div class="d-flex justify-content-center mt-5 tags">
+							<ul class="row justify-content-center list-icons" id="addTag">
+								<!-- 임시로 버튼 비활성화 -->
+								<li class="flex" th:id="${tagList.tno}" th:each="tagList,i : ${tagList}">
+									
+									<button th:if="${tagList.leader} == '1'" style="background:#029ceb; color: #fff;" type="button" th:class="tagBtn+${tagList.tno}" th:id="${tagList.tno}" th:value="${tagList.leader}" onClick="leader()" th:text="${tagList.tags}"></button>
+									<button th:unless="${tagList.leader} == '1'" type="button" th:class="tagBtn+${tagList.tno}" th:id="${tagList.tno}" th:value="${tagList.leader}" onClick="leader()" th:text="${tagList.tags}"></button>
+									<button type="button" class="delBtn" th:id="delUserTag+${i.index}" onClick="eraser()" th:value="${tagList.tno}"><i class="bi bi-x-circle"></i></button></li>
+							</ul>
+						</div>
+						<!-- 필수 유저 번호(uno) -->
+						<input type="hidden" id="uno" name="uno" th:value="${mvo.uno}">
+						
+ 						<input type="submit" id="go" th:value="완료" style="width:100px; height:50px;"/>
+					</form>
+				</div>
+			</div>
+		</div>	
+	</div>	
+			
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js" 
+			integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
+			crossorigin="anonymous"></script>
+		
+			
+			<script th:inline="javascript">
+				$(document).ready(function(){
+
+					$('#success').click(function(event) {
+					    event.preventDefault();
+					    
+					    var form = $('#frm')[0]
+					    var data = new FormData(form);
+					    
+					    var imgFile = $('#file').val();//이미지 없을 때 막기
+					    console.log(imgFile);
+					    if(imgFile == ""){
+					    	alert("이미지를 선택해주세요");
+					    	return false;
+					    }
+					    
+					    $('#success').prop('disabled', true);
+						
+					    $.ajax({
+					        type: "POST",
+					        enctype: 'multipart/form-data',
+					        url: "/member/updateProfile.do",
+					        data: data,
+					        processData: false,
+					        contentType: false,
+					        cache: false,
+					        timeout: 600000,
+					        success: function (data) {
+					        	$('#success').prop('disabled', false);
+					        	alert('success')
+					        },
+					        error: function (e) {
+					            $('#success').prop('disabled', false);
+					            alert('fail');
+					        }
+					    });
+					});
+					
+					$("#file").change(function(){//이미지 미리보기
+						setImageFromFile(this, '#imgView');
+					});
+							 
+					function setImageFromFile(input, expression) {
+					    if (input.files && input.files[0])
+					    {
+					        var reader = new FileReader();
+					 
+					            reader.onload = function (e) {
+					                $(expression).attr('src', e.target.result);
+					           }
+					           reader.readAsDataURL(input.files[0]);
+					     }
+					}
+						
+
+					
+					$("#go").on("click", function(){
+						
+						var frm = $("#form")[0];
+						
+						frm.action = "goUpdateProfile.do";
+						frm.submit();
+					}); 
+					
+					/* $("#insertTag").on("click", function(){
+						var tag = $("#exampleDataList").val();
+						var uno = $("#uno").val();
+						tag = tag.replace(/ /g,"");//공백제거
+						alert(tag);
+						console.log(uno);
+						
+						
+					});//insert 태그 end */
+					
+					/*여기서부터 태그추가입니다. */
+					//select box 스페이스바 막기
+					$(document).on('keydown',".select2-search__field",function(e){  
+						   if (e.which === 32)  
+						      return false;  
+					});
+					
+					//select2 초기화
+					$('.sel').select2({
+						placeholder: '선택하여 주십시오.',
+						allowClear: true,
+						tags: true
+					});
+				    //select2 값 받아오기(tno)  
+					$('.sel').on("select2:select", function (e) {
+					    console.log($('.sel').select2().val());//잘나옴
+						//초기화
+					    $('.sel').select2({
+							placeholder: '선택하여 주십시오.',
+							allowClear: true,
+							tags: true
+						});
+					    
+					   
+					    
+					});  
+				     var rtn = true;
+				   
+				    $("#insertTag").on("click", function(){
+				    	var tno = $('.sel').select2().val();
+				    	var tags = $('.sel option:selected').select2().text();			
+				    	if(tags == ''){
+				    		alert('태그를 선택하세요');
+				    		return;
+				    	}
+				    	
+				    	if($.isNumeric(tno)){
+					    	oldInsert();
+					    	$('.sel').select2({
+								placeholder: '선택하여 주십시오.',
+								allowClear: true,
+								tags: true
+							});
+				    	} else{
+				    		newInsert();
+				    		
+				    		$('.sel').select2({
+								placeholder: '선택하여 주십시오.',
+								allowClear: true,
+								tags: true
+							});
+				    	}	
+				    });
+				    
+				    function oldInsert(){
+				    	//var frm = $("#form")[0];
+						var uno = $("#uno").val();
+						var tags = $('.sel option:selected').select2().text();
+						var tno = $('.sel').select2().val();
+						var leader = 0; 
+						var param = {"uno": uno, "tno": tno, "tags": tags, "leader": leader}
+						//alert("tno>>>"+tno);//잘나옴
+						//alert("uno>>>"+uno);//잘나옴
+						//alert("tags>>>"+tags);//잘나옴
+						$("input[name=tno]").val(tno);
+						$("input[name=tags]").val(tags);
+						//frm.action='/member/oldUserTag.do';	
+						//frm.submit();
+						
+						$.ajax({
+							contentType: 'application/json',
+							type: 'POST',
+							data: JSON.stringify(param),
+							url: '/member/oldUserTag.do',
+							success : function(data){
+								alert("success");
+		/* <li class="flex" th:each="tagList,i : ${tagList}"><button disabled><span th:text="${tagList.tags}"></span></button>
+		<button class="delBtn" th:id="delUserTag+${i.index}" onClick="eraser()" th:value="${tagList.tno}"><i class="bi bi-x-circle"></i></button></li> */
+								var str = '<li class="flex" id="'+data.tno+'"><button type="button" class="tagBtn+'+data.tno+'" id="'+data.tno+'" value="'+data.leader+'" onClick="leader()">'+data.tags+'</button>'
+										 +'<button type="button" class="delBtn" id="delUserTag" onClick="eraser()" value="'+data.tno+'"><i class="bi bi-x-circle"></i></button></li>';
+								$('#addTag').append(str);//ul안에 li 넣으려고?
+										
+							},
+							error: function(jqXHR, textStatus, errorThrown){
+								alert("ERROR : " + textStatus + " : " + errorThrown);
+							}
+						});
+				    }
+				    function newInsert(){
+				    	var frm = $("#form")[0];
+				    	var uno = $("#uno").val();
+						var tags = $('.sel option:selected').select2().text();
+						var leader = 0; 
+						var param = {"uno": uno, "tags": tags, "leader": leader}
+						
+						//alert("uno>>>"+uno);//잘나옴
+						//alert("tags>>>"+tags);//잘나옴
+
+						$("input[name=tags]").val(tags);
+					
+						
+						$.ajax({
+							contentType: 'application/json',
+							type: 'POST',
+							data: JSON.stringify(param),
+							url: '/member/newTag.do',
+							success : function(data){
+								
+								if(data.tags == "fail"){
+									alert("중복됨");
+									return false;
+								}
+								var str = '<li class="flex" id="'+data.tno+'"><button type="button" class="tagBtn+'+data.tno+'" id="'+data.tno+'" value="'+data.leader+'" onClick="leader()">'+data.tags+'</button>'
+										 +'<button type="button" class="delBtn" id="delUserTag" onClick="eraser()" value="'+data.tno+'"><i class="bi bi-x-circle"></i></button></li>';
+								$('#addTag').append(str);//ul안에 li 넣으려고?
+								alert("success");		
+							},
+							error: function(jqXHR, textStatus, errorThrown){
+								alert("ERROR : " + textStatus + " : " + errorThrown);
+							}
+						});
+				    }
+				    
+				}); //document ready end
+				
+				/*태그 삭제입니다.*/
+			  	function eraser(){
+				    //event.preventDefault();
+					//alert("id>>>"+event.srcElement.id);
+					//alert("value>>>"+event.target.value);
+					var frm = $("#form")[0];
+					var uno = $("#uno").val();
+					var tno = event.target.value;
+					var param = {"uno": uno, "tno": tno}
+					console.log("uno>>>>" + uno);//잘나옴
+					console.log("tno>>>>" + tno);//잘나옴
+					alert("delete success");
+					$("input[name=tno]").val(tno);
+					//frm.action='/member/delUserTag.do';
+					//frm.submit();
+					$.ajax({
+						contentType: 'application/json',
+						type: 'POST',
+						data: JSON.stringify(param),
+						url: '/member/delUserTag.do',
+						success: function(data){
+							alert("success");
+							
+							$('#'+data.tno+'').remove();//내가 선택한 li 삭제
+						},
+						error: function(jqXHR, textStatus, errorThrown){
+							alert("ERROR : " + textStatus + " : " + errorThrown);
+						}	
+					});
+				}  
+				
+				/*리더태그*/
+				function leader(){
+					//alert("id>>>"+event.target.id);
+					//alert("value>>>"+event.target.value);
+					//alert("text>>>"+event.target.textContent); //태그 이름
+					var frm = $("#form")[0];
+					var uno = $("#uno").val();
+					var tno = event.target.id;
+					var tags = event.target.textContent;
+					var leader = event.target.value;
+					var param = {"uno": uno, "tno": tno, "tags": tags,"leader": leader}
+					console.log("uno>>>>" + uno);//잘나옴
+					console.log("tno>>>>" + tno);//잘나옴
+					alert("leader shift");
+					$("input[name=tno]").val(tno);
+					
+					$.ajax({
+						contentType: 'application/json',
+						type: 'POST',
+						data: JSON.stringify(param),
+						url: '/member/leaderTag.do',
+						success: function(data){
+							//alert("leader shift success");
+							//alert("data.leader>>>"+data.leader);
+							//alert("data.tno>>>"+data.tno);
+							//alert(".tagBtn"+data.tno);
+							if(data.leader == '0'){
+								$(".tagBtn"+data.tno).css("background","#029ceb");
+								$(".tagBtn"+data.tno).css("color","#fff");
+								$(".tagBtn"+data.tno).val('1');
+							} else {
+								$(".tagBtn"+data.tno).css("background","#fff");
+								$(".tagBtn"+data.tno).css("color","#000");
+								$(".tagBtn"+data.tno).val('0');
+							}
+						},
+						error: function(data){
+							alert("ERROR : " + data.uno + " : " + data.tno);
+						}	
+					});		
+				}
+				
+			
+
+			</script>
+			  <!-- Vendor JS Files -->
+			  <script src="/bootstrap/assets/vendor/jquery/jquery.min.js"></script>
+			  <script src="/bootstrap/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+			  <script src="/bootstrap/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+			  <script src="/bootstrap/assets/vendor/php-email-form/validate.js"></script>
+			  <script src="/bootstrap/assets/vendor/venobox/venobox.min.js"></script>
+			  <script src="/bootstrap/assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+			  <script src="/bootstrap/assets/vendor/counterup/counterup.min.js"></script>
+			  <script src="/bootstrap/assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+			  <script src="/bootstrap/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+			  <script src="/bootstrap/assets/vendor/aos/aos.js"></script>
+			
+			  <!-- Template Main JS File -->
+			  <script src="/bootstrap/assets/js/main.js"></script>
+ </body>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>
+</html>
