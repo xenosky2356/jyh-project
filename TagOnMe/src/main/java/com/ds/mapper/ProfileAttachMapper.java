@@ -1,5 +1,7 @@
 package com.ds.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ds.domain.ProfileAttachVO;
@@ -12,5 +14,5 @@ public interface ProfileAttachMapper {
 	//public List<BoardAttachVO> findByBno(Long bno);
 	//public void deleteAll(Long bno);
 	//public List<BoardAttachVO> getOldFiles();
-	ProfileAttachVO selectFileName(int uno);
+	public List<ProfileAttachVO> selectFileName();
 }

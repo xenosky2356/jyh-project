@@ -18,8 +18,6 @@ public interface TagBoardService {
 	public List<TagBoardDTO> getTagDetail(Long bno);
 	
 	public List<TagBoardDTO> getSearchTagList(Long bno);
-	
-	public List<TagBoardDTO> getSearchTagListForNull(TagBoardDTO params);
 
 	public void oldBoardTag(TagBoardDTO tagBoardDTO);
 
@@ -28,10 +26,4 @@ public interface TagBoardService {
 	public void newBoardTag(TagBoardDTO tagBoardDTO);//존재하지 않는 유저태그 삽입
 
 	public void delBoardTag(TagBoardDTO tagBoardDTO);//유저 태그 삭제(임시)
-	
-	public void delBoardWriteTag(TagBoardDTO tagBoardDTO);
-	
-	public void oldBoardWriteTag(TagBoardDTO tagBoardDTO);
-	
-	public void newBoardWriteTag(TagBoardDTO tagBoardDTO);
 }

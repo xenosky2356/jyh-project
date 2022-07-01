@@ -15,27 +15,21 @@
 
 	var ws;
 	
-	$(window).ready(function(){
-		wsOpen();
 
-	});
-	
-	
 	function wsOpen(){	//웹소켓 전송시 현재 방의 번호를 넘겨서 보냄
-		console.log(location.host);
-		ws = new WebSocket("ws://" + location.host + "/chatting/" + $("#roomNumber").val());
+		ws = new WebSocket("ws://" + location.host + "/chating/" + $("#userRoomNumber").val());
 		console.log("소켓 연결");
 		wsEvt();
 	}
 		
 	function wsEvt() {
 		ws.onopen = function(data){
-			
+			var nickName = [[${nickName}]]; 
+			console.log(nickName + "님이 입장하셨습니다.");
 		}
 		
 		ws.onmessage = function(data) {
 			//메시지를 받으면 동작
-			
 			var msg = data.data;
 			var top = $("#chating").prop("scrollHeight");
 			if(msg != null && msg.trim() != ''){
@@ -47,9 +41,9 @@
 					}
 				}else if(d.type == "message"){
 					if(d.sessionId == $("#sessionId").val()){
-						$("#chating").append("<p class='me'> 나:" + d.msg + "</p>");
+						$("#chating").append("<p class='me'>나 :" + d.msg + "</p>");
 					}else{
-						$("#chating").append("<p class='others'> 상대방:" + d.msg + "</p>");
+						$("#chating").append("<p class='others'>" + d.userName + " :" + d.msg + "</p>");
 					}
 					$("#chating").scrollTop(top);
 				}else{
@@ -65,23 +59,39 @@
 		});
 	}
 
+	function chatName(){
+		var userName = $("#userName").val();
+		if(userName == null || userName.trim() == ""){
+			alert("사용자 이름을 입력해주세요.");
+			$("#userName").focus();
+		}else{
+			wsOpen();
+			$("#yourName").hide();
+			$("#yourMsg").show();
+		}
+	}
+
+	function wsIn() {
+		wsOpen();
+		$(".wsOpen").hide();
+		$(".type_msg").show();
+	}
+	
 	function send() {
 		console.log("전송 버튼");
 		var option ={
 			type: "message",
-			roomNumber: $("#roomNumber").val(),
+			userRoomNumber: $("#userRoomNumber").val(),
 			sessionId : $("#sessionId").val(),
+			/* userName : $("#userName").val(), */
 			msg : $(".write_msg").val()
 		}
-		if(!($(".write_msg").val() == null || $(".write_msg").val() == (""))){			
-			ws.send(JSON.stringify(option))
-			$('.write_msg').val("");
-			$('.write_msg').focus();
-
-		}else{
-			$('.write_msg').focus();
-			return;
-		}
+		ws.send(JSON.stringify(option))
+		$('.write_msg').val("");
+	}
+	
+	function out(){
+		
 	}
 
 </script>
@@ -89,36 +99,35 @@
  
 <body>
 <div class="container">
-<!-- ======= Header ======= -->
-<header>
-    <h1 class=" text-center" th:text="${roomName+' 채팅'}">
-	</h1>
-  </header>
-<!-- End Header -->
-	<!-- <h3 class=" text-center" th:text="${roomName+' 채팅'}"></h3> -->
-	
-	<input type="hidden" id="sessionId" value="${list.userid}">
-	<input type="hidden" id="roomNumber" th:value="${roomNumber}">
-	  <div class="inbox_msg">
-	    
-	    <div class="mesgs">
-	      <div class="chating" id="chating" style="overflow:auto">
-	
-	      </div>
-	      <div class="type_msg">
-	        <div class="input_msg_write">
-	          <input type="text" class="write_msg" placeholder="Type a message" />
-	          <button class="msg_send_btn" type="button" onclick="send()">
-	          	<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
-	          </button>
-	        </div>
-	      </div>
-	    </div>
-	  </div>
-	
-<!-- 	  <p class="text-center top_spac"> Design by <a target="_blank" href="https://www.linkedin.com/in/sunil-rajput-nattho-singh/">Sunil Rajput</a></p> -->
-	  
-</div>
+<h3 class=" text-center" th:text="${roomName}"></h3>
+<input type="hidden" id="sessionId" value="">
+<input type="hidden" id="userRoomNumber" th:value="${userRoomNumber}">
+<div class="messaging">
+  <div class="inbox_msg">
+    
+    <div class="mesgs">
+      <div class="chating" id="chating" style="overflow:auto">
+
+      </div>
+      <div class="wsOpen">
+      	<div class="input_msg_write">
+      		<button class="wsOpenBtn" onclick="wsIn()">대화 시작하기</button>
+      	</div>
+      </div>
+      <div class="type_msg">
+        <div class="input_msg_write">
+          <input type="text" class="write_msg" placeholder="Type a message" />
+          <button class="msg_send_btn" type="button" onclick="send()">
+          	<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="text-center top_spac"> Design by <a target="_blank" href="https://www.linkedin.com/in/sunil-rajput-nattho-singh/">Sunil Rajput</a></p>
+  
+</div></div>
 </body>
  
  

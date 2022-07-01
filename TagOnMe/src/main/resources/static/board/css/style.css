@@ -379,6 +379,7 @@ h4 strong {
   -webkit-border-radius: 3px;
 }
 .btn {
+  background: #e4e7ea;
   outline: none !important;
   font-size: 16px;
   line-height: 26px;
@@ -1475,7 +1476,7 @@ textarea.form-control {
 
 @media screen and (min-width: 768px) {
     #adv-search {
-        width: 100%;
+        width: 500px;
         margin: 0 auto;
     }
     .dropdown.dropdown-lg {

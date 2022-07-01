@@ -6,23 +6,19 @@ import com.ds.domain.MemberVO;
 import com.ds.domain.TagVO;
 
 public interface MemberService {
-	
 	MemberVO readMember(MemberVO vo); 
 	
-	MemberVO login(MemberVO vo);//로그인
-		
-	public void insert(MemberVO vo);//회원가입시 회원정보를 넣음
+	void insert(MemberVO vo); //회원가입시 회원정보를 넣음
 	
-	public void insertTagUser(TagVO tagvo);//회원가입시 TagUser를 넣음
-
-	//public void insertTags(TagVO tagvo);//회원가입시 태그를 넣음
+	
+	MemberVO login(MemberVO vo);
+	
 	
 	public void updatePw(MemberVO vo);//회원정보수정)비밀번호만수정
 	// public void 로 타입 변경
 
 
 	public int idChk(String id);
-	
 	
 	List<TagVO> readTag();//태그를 읽어옴
 	
@@ -42,7 +38,5 @@ public interface MemberService {
 	void leaderTag(TagVO tagVO);//리더 태그(임시)
 	
 	TagVO getNewTag(TagVO tagVO);//트랜잭션으로 인서트한 태그 바로 가져오려고(임시)
-	
-	TagVO tagCheck(TagVO tagVO);//중복검사
 	
 }

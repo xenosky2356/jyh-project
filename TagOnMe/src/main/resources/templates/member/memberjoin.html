@@ -2,76 +2,243 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<!-- Required meta tags -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<link
-	href=https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css
-	rel="stylesheet">
-<link
-	href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css
-	rel="stylesheet">
-<title>Tag on me!</title>
-
-<!-- Favicons -->
-<link href="/bootstrap/assets/img/favicon.png" rel="icon">
-<link href="/bootstrap/assets/img/apple-touch-icon.png"
-	rel="apple-touch-icon">
-
-<!-- Google Fonts -->
-<link
-	href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap"
-	rel="stylesheet">
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css"
-	rel="stylesheet" />
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-
-
-
 <title>회원 가입</title>
-<style>
-body{
-	position: relative;
-	width: 100%;
-	height: 100%;
-}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+	crossorigin="anonymous"></script>
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script
+	src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>
 
-.img_back{
-	width: 550px;
-	height: 1350px;
-	background: #ffffff url("../img/diego-rosa-Yyk4OmVJAyE-unsplash.jpg") no-repeat right;
-	background-size: cover;
-	position: absolute;
-	top:-100px;
-	left: 0;
-	box-shadow: 0 0 8px 2px rgba(0,0,0,0.2);
-	z-index: -9999;
-	opacity: 85%;
+<!-- <script type="text/javascript" src="/resources/js/tagajax.js?ver=2.3"></script> -->
+<script>
+
+	$(document).ready(function(e) {
+		$("#join").click(function(e) {//확인버튼 누를시 동작
+			var userid = $('#userid');
+			var userpw = $('#userpw');
+			var repw = $('#repw');
+			var nickname = $('#nickname');
+			var email = $('#email');
+
+			if ($("#idChk").val() != "Y") { // idChk 값이 Y 가 아닐 경우
+				userid.focus();
+				$("#idChktxt").html('아이디 중복확인을 해주세요').css('color', 'red');
+				return;
+
+			 } else if (userpw.val() == "") {
+				$("#pwtxt").html('비밀번호를 입력하세요').css('color', 'red');
+				userpw.focus();
+				return;
+
+			} else if (repw.val() == "") {
+				$("#pwchtxt").html('비밀번호 확인을 입력하세요').css('color', 'red');
+				repw.focus();
+				return;
+				
+			} else if (nickname.val() == "" ||nickname.val() == null) {
+				$("#nicknametxt").html('닉네임을 입력하세요').css('color', 'red');
+				nickname.focus();
+				return;
+
+			} else if (email.val() == "" || email.val() == null) {
+				$("#emailtxt").html('이메일을 입력하세요').css('color', 'red');			
+				email.focus();
+				return;
+			}
+			
+			
+			$('#joinfrm').submit();
+			alert("가입이 완료 되었습니다");
+		});
+		
+		$(document).ready(function(e) {
+			
+			
+			$("#repw").keyup(function(){		
+		if ($("#userpw").val() != $("#repw").val()) {
+			
+			$("#pwchtxt").html('비밀번호가 일치하지 않습니다.').css('color','red');
+			$("#join").prop("disabled",true);
+			
+		}else if ($("#userpw").val() == "" || $("#userpw").val() == null) {
+			$("#pwchtxt").html('비밀번호를 입력하세요').css('color','green');
+			$("#join").prop("disabled",false);
+		
+			}else if ($("#userpw").val() == $("#repw").val()) {
+						$("#pwchtxt").html('비밀번호가 일치합니다!').css('color','green');
+						$("#join").prop("disabled",false);
+					}
+						
+					});
+			
+			$('#userpw').keyup(function(e) {
+				if ($('#userpw').val() != null || $('#userpw').val() != "") {
+					e.preventDefault();
+						$("#pwtxt").html('');
+								return;
+				}
+				});
+		
+		$('#repw').keyup(function(e) {
+			if ($('#repw').val() != null || $('#repw').val() != ""){
+					e.preventDefault();
+						$("#pwchktxt").html('');
+						return;
+				}
+						
+				});
+			
+			
+			$('#nickname').keyup(function(e) {
+				if ($('#nickname').val() != null || $('#nickname').val() != "") {
+					e.preventDefault();
+						$("#nicknametxt").html('');
+								return;
+				}
+				});
+			
+			$('#email').keyup(function(e) {
+				if ($('#email').val() != null || $('#email').val() != "") {
+					e.preventDefault();
+						$("#emailtxt").html('');
+								return;
+				}
+				});
+			
+			/* if ($('#errorMsg').val() == null || $('#errorMsg').val() == "")){
+			$("#emailtxt").html('이메일양식X').css('color', 'red');			
+		email.focus();
+		return;
+	}  */
+		
 	
-}
-
+		});
+		
+		
+		
+		$("#idChk").click(function(e) {
+			e.preventDefault();
+			var id = $("#userid").val();
+			if (id == "") {
+				$("#idChk").prop("value", "");
+				$("#idChktxt").html('아이디를 입력하세요').css('color', 'red');
+				$("#userid").focus();
+				return;
+			}
+			
+			$.ajax({
+				url : "/member/idChk/" + id,
+				type : "post",
+				dataType : "json",
+				success : function(result) { // 성공적으로 비교가 됐을 시,
+					if (result > 0) {
+						$("#idChk").prop("value", ""); //그 후에 값을 변경해줄때사용 사실 prop만 써도됨
+						$("#idChktxt").html('이미 있는 아이디 입니다').css('color', 'red');
+						userid.focus();
+					} else {
+						$("#idChk").attr("value", "Y"); // 버튼을 클릭했을 시, 중복확인이 되었다는 표시를 남겨줌(Y)//맨처음에 한번 값을 넣어줄때 사용
+						$("#idChktxt").html('사용가능한 아이디 입니다').css('color', 'green');
+					}
+				}
+		
+			});
+		});
+		
+	
+	$(document).on('keydown',".select2-search__field",function(e){  
+		   if (e.which === 32)  
+		      return false;  
+	});
+	
+	
+	//select2 초기화
+	$('.sel').select2({
+		placeholder: '선택하여 주십시오.(초기화:backSpace)',
+		allowClear: true,
+		tags: true
+	});
+ //select2 값 받아오기(tno)  
+	$('.sel').on("select2:select", function (e) {//내가선택한tno를 들고옴
+	    console.log($('.sel').select2().val());//잘나옴
+		//초기화
+	    $('.sel').select2({
+			placeholder: '선택하여 주십시오.(초기화:backSpace)',
+			allowClear: true,
+			tags: true
+		});
+	    
+	});  
+	 $("#insertTag").on("click", function(){
+									
+	    	var frm = $("#form")[0];
+			/* var uno = $("#uno").val();//유저번호 */
+			var tags = $('.sel option:selected').select2().text();//선택된 애의 태그이름
+			var tno = $('.sel').select2().val();//선택된 태그번호
+			/* alert("tno>>>"+tno);//잘나옴
+			alert("uno>>>"+uno);//잘나옴
+			alert("tags>>>"+tags);//잘나옴 */
+			$("input[name=tno]").val(tno);
+			$("input[name=tags]").val(tags);
+			if($.isNumeric(tno)){
+				alert("숫자");
+			    frm.action='/member/memberjoin';								
+			} else {
+				alert("숫자아님");
+				var frm = $("#form")[0];
+				/* var uno = $("#uno").val(); */
+				var tags = $('.sel option:selected').select2().text();
+				var tno = '';
+				/* alert("tno>>>"+tno);//잘나옴
+				alert("uno>>>"+uno);//잘나옴
+				alert("tags>>>"+tags);//잘나옴 */
+				$("input[name=tno]").val(tno);
+				$("input[name=tags]").val(tags);
+				frm.action='/member/memberjoin';
+			}
+			
+			frm.submit(); 
+		
+		});//insert 태그 end
+		
+	});
+</script>
+</head>
+<style>
 .box {
 	width: 500px;
 	margin: 50px auto;
-	transform: translateX(45%);
 }
 
 #join {
 	/* position: absolute;
   left: 50%;
-  transform: translateX(-40%); */
+  transform: translateX(-50%); */
 	width: 100%;
 	height: 50px;
 	margin-top: 16px;
 	margin-bottom: 16px;
 }
 
+.form-control, .form-group {
+	/*  margin-top: 16px; */
+	margin-bottom: 25px;
+}
+
+
 #userid {
 	/*  margin-top: 16px; */
-	margin-bottom: 6px;
+	margin-bottom: 40px;
 }
 
 #idChk {
@@ -100,19 +267,14 @@ body{
 	cursor: pointer;
 	transition: 800ms ease all;
 	outline: none;
-	font-size: 20px;
-	font-weight: bold
 }
 
 #join:hover {
 	background: #fff;
-	color: #029ceb;
-	border: 1px solid #029ceb;
-	transition: all 0.3s;
-	
+	color: #02e0d9;
 }
 
-/* #join:before, #join:after {
+#join:before, #join:after {
 	content: '';
 	position: absolute;
 	top: 0;
@@ -121,7 +283,7 @@ body{
 	width: 0;
 	background: #02e0d9;
 	transition: 400ms ease all;
-} */
+}
 
 #join:after {
 	right: inherit;
@@ -189,581 +351,87 @@ body{
 	width: 0;
 }
 
-#idChktxt, #pwtxt, #pwchtxt, #nicknametxt, #emailtxt {
-	height: 5px;
-	display: block;
+#idChktxt,#pwtxt,#pwchtxt,#nicknametxt,#emailtxt
+{
+    height: 5px;
+    display: block;
+   
 }
-
-.list-icons {
-	color: #C5CAE9;
-	flex-wrap: wrap;
-}
-
-.list-icons li {
-	list-style: none;
-	border-radius: 10px;
-	margin: 10px;
-	color: #fff;
-}
-
-.list-icons li i {
-	font-size: 17px;
-}
-
-.tags {
-	margin: 10px 10px 4px 0;
-}
-
-.tags ul {
-	list-style: none;
-	padding: 0;
-}
-
-.tags ul button {
-	font-size: 14px;
-	border-radius: 50px;
-	background: none;
-}
-
-.tags ul li .delBtn {
-	border: none;
-	background: none;
-}
-p{
-color : black;
-}
-
-.form-group::after{
-	clear: both;
-	display: table;
-	content: "";
-}
-
-h4{
-	text-align: center;
-	
-}
-
-p{
-	border: 1px solid #a9a9a9;
-	display: inline;
-	
-	padding: 6px 30px;
-	border-radius: 50px;
-	margin-right: 8px;
-	cursor: pointer;
-}
-p:hover{
-	background: #029ceb;
-	transition: all 0.3s;
-	border: 1px solid #029ceb;
-	color: #fff;
-}
-
-i:hover{
-	color: rgb(255, 0, 0);
-}
-
-.form-group{
-	font-size: 14px;
-	font-weight: bold;
-}
-
-.form-group .form-control{
-	border-radius: 0;
-	border: none;
-	border-bottom: 1px solid #cacaca;
-	margin-top: 8px;
-	
-	height: 40px;
-}
-
-
-.check_wrap{
-	width: 100%;
-}
-
-.check_wrap::after{
-	content: "";
-	clear: both;
-	display: table;
-}
-
-#idChk{
-	padding: 6px 14px;
-	border: 1px solid #029ceb;
-	border-radius: 0;
-	font-weight: 300;
-	margin-top: 4px;
-}
-
-#idChk{
-	float: right;
-	display: inline-block;
-}
-
-#idChktxt{
-	float: left;
-	display: inline-block;
-}
-
-.form-label{
-	margin: 20px 0;
-	font-weight: bold;
-}
-
-.form-group span{
-	padding: 10px 0 18px;
-}
-
-#userid{
-	margin-bottom: 0;
-}
-
-@media ( max-width :747px) {
-	.img_back{
-		display: none;
-	}
-	
-	.box {
-	transform: translateX(0);
-}
-}
-
-
-
 </style>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-	crossorigin="anonymous"></script>
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<link
-	href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script
-	src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css"
-	rel="stylesheet" />
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>
-
-<!-- <script type="text/javascript" src="/resources/js/tagajax.js?ver=2.3"></script> -->
-<script>
-	$(document).ready(function(e) {	
-		$("#join").click(function(e) {//확인버튼 누를시 동작
-			var userid = $('#userid');
-				var userpw = $('#userpw');
-				var repw = $('#repw');
-				var nickname = $('#nickname');
-				var email = $('#email');
-
-				if ($("#idChk").val() != "Y") { // idChk 값이 Y 가 아닐 경우
-					userid.focus();
-					$("#idChktxt").html('아이디 중복확인을 해주세요')
-							.css('color', 'red');
-					return;
-
-				} else if (userpw.val() == "") {
-					$("#pwtxt").html('비밀번호를 입력하세요').css(
-							'color', 'red');
-					userpw.focus();
-					return;
-
-				} else if (repw.val() == "") {
-					$("#pwchtxt").html('비밀번호 확인을 입력하세요')
-							.css('color', 'red');
-					repw.focus();
-					return;
-
-				} else if (nickname.val() == ""
-						|| nickname.val() == null) {
-					$("#nicknametxt").html('닉네임을 입력하세요')
-							.css('color', 'red');
-					nickname.focus();
-					return;
-
-				} else if (email.val() == ""
-						|| email.val() == null) {
-					$("#emailtxt").html('이메일을 입력하세요').css(
-							'color', 'red');
-					email.focus();
-					return;
-
-				}/*else if ($("#addTag").val() != "" || ($("#addTag").val() == null)) {
-								sel.focus();
-									$("#tagChktxt").html('태그를 확인해주세요').css('color', 'red');
-									return;
-							} */
-
-				$('#joinfrm').submit();
-				alert("가입 되었습니다");
-			});
-
-				$(document).ready(
-						function(e) {
-							$("#repw").keyup(
-									function() {
-										if ($("#userpw").val() != $("#repw")
-												.val()) {
-
-											$("#pwchtxt").html(
-													'비밀번호가 일치하지 않습니다.').css(
-													'color', 'red');
-											$("#join").prop("disabled", true);
-
-										} else if ($("#userpw").val() == ""
-												|| $("#userpw").val() == null) {
-											$("#pwchtxt").html('비밀번호를 입력하세요')
-													.css('color', 'green');
-											$("#join").prop("disabled", false);
-
-										} else if ($("#userpw").val() == $(
-												"#repw").val()) {
-											$("#pwchtxt").html('비밀번호가 일치합니다!')
-													.css('color', 'green');
-											$("#join").prop("disabled", false);
-										}
-
-									});
-
-							$('#userpw').keyup(
-									function(e) {
-										if ($('#userpw').val() != null
-												|| $('#userpw').val() != "") {
-											e.preventDefault();
-											$("#pwtxt").html('');
-											return;
-										}
-									});
-
-							$('#repw').keyup(
-									function(e) {
-										if ($('#repw').val() != null
-												|| $('#repw').val() != "") {
-											e.preventDefault();
-											$("#pwchktxt").html('');
-											return;
-										}
-
-									});
-
-							$('#nickname').keyup(
-									function(e) {
-										if ($('#nickname').val() != null
-												|| $('#nickname').val() != "") {
-											e.preventDefault();
-											$("#nicknametxt").html('');
-											return;
-										}
-									});
-
-							$('#email').keyup(
-									function(e) {
-										if ($('#email').val() != null
-												|| $('#email').val() != "") {
-											e.preventDefault();
-											$("#emailtxt").html('');
-											return;
-										}
-									});
-
-							/* if ($('#errorMsg').val() == null || $('#errorMsg').val() == "")){
-							$("#emailtxt").html('이메일양식X').css('color', 'red');			
-							email.focus();
-							return;
-							}  */
-
-						});
-				// 아이디 중복 체크 start
-				$("#idChk").click(
-						function(e) {
-							e.preventDefault();
-							var id = $("#userid").val();
-							if (id == "") {
-								$("#idChk").prop("value", "");
-								$("#idChktxt").html('아이디를 입력하세요').css('color',
-										'red');
-								$("#userid").focus();
-								return;
-							}
-
-							$.ajax({
-								url : "/member/idChk/" + id,
-								type : "post",
-								dataType : "json",
-								success : function(result) { // 성공적으로 비교가 됐을 시,
-									if (result > 0) {
-										$("#idChk").prop("value", ""); //그 후에 값을 변경해줄때사용 사실 prop만 써도됨
-										$("#idChktxt").html('이미 있는 아이디 입니다')
-												.css('color', 'red');
-										userid.focus();
-									} else {
-										$("#idChk").attr("value", "Y"); // 버튼을 클릭했을 시, 중복확인이 되었다는 표시를 남겨줌(Y)//맨처음에 한번 값을 넣어줄때 사용
-										$("#idChktxt").html('사용가능한 아이디 입니다')	.css('color', 'green');
-									}
-								}
-
-							});
-						});
-				// 아이디 중복 체크 end
-
-				/*여기서부터 태그추가입니다. */
-				//select box 스페이스바 막기
-				$(document).on('keydown', ".select2-search__field",
-						function(e) {
-							if (e.which === 32)
-								return false;
-						});
-
-				//select2 초기화
-				$('.sel').select2({
-
-					placeholder : '선택하여 주십시오.(초기화:backSpace)',
-					allowClear : true,
-					tags : true
-				});
-				//select2 값 받아오기(tno)  
-				$('.sel').on("select2:select", function(e) {
-					console.log($('.sel').select2().val());
-
-					//초기화
-					$('.sel').select2({
-						placeholder : '선택하여 주십시오.(초기화:backSpace)',
-						allowClear : true,
-						tags : true
-					});
-
-				});
-
-				$("#insertTag").on("click", function() {
-					/* alert("#insertTag"); */
-					var frm = $("#joinform")[0];
-					var tno = $('.sel').select2().val();
-					var tags = $("#tags").text();
-
-					$("input[name=tno]").val(tno);
-					$("input[name=tags]").val(tags);
-
-					if ($.isNumeric(tno)) {
-						oldInsert();
-					}
-					/*
-					if($.isNumeric(tno)){
-						alert("old");//oldInsert();	//html에 바로보이도록			    		
-					} else{
-						alert("new"); //newInsert();	//html에 바로보이도록
-					}*/
-				});
-
-				function oldInsert() {//joinButton을 눌렀을시
-					var frm = $("#joinform")[0];
-					/* var uno = $("#uno").val(); */
-					var tags = $('.sel option:selected').select2().text();
-					var tno = $('.sel').select2().val();
-					var delBtn = '<button type="button" class="delBtn" id="delBtn'+tno+'" onClick="eraser('+tno+')" style="display:inline">'
-								+'<i id="xBtn" class="bi bi-x-circle"></i></button>';
-// 					var param = {
-// 						"tno" : tno,
-// 						"tags" : tags
-// 					}
-					/* alert("tno>>>" + tno); */
-					/* alert("uno>>>"+uno); */
-					/* alert("tags>>>" + tags); */
-					$("input[name=tno]").val(tno);
-					$("input[name=tags]").val(tags);
-
-					$('#addTag').find('li').append('<p id=tag'+tno+'>'+tags+'</p>');//ul안에 li 넣으려고?
-// 					delBtn.attr('style', 'display:inline');
-// 					delBtn.attr('id', 'delBtn'+tno);
-					$('#addTag').find('li').append(delBtn);//ul안에 li 넣으려고?
-
-				}
-			});
-
-	/*$.ajax({
-		contentType: 'application/json',
-		type: 'POST',
-		data: JSON.stringify(param),
-		url: '/member/oldUserTag.do',
-		success : function(data){
-			alert("success");
-	/* <li class="flex" th:each="tagList,i : ${tagList}"><button disabled><span th:text="${tagList.tags}"></span></button>
-	<button class="delBtn" th:id="delUserTag+${i.index}" onClick="eraser()" th:value="${tagList.tno}"><i class="bi bi-x-circle"></i></button></li> */
-	/* var str = '<li class="flex" id="'+data.tno+'"><button disabled><span>'+data.tags+'</span></button>'
-			 +'<input type="button" class="delBtn" id="delUserTag" onClick="eraser()" value="'+data.tno+'"><i class="bi bi-x-circle"></i></button></li>';
-	$('#addTag').append(str);//ul안에 li 넣으려고?
-	},
-	error: function(jqXHR, textStatus, errorThrown){
-	alert("ERROR : " + textStatus + " : " + errorThrown);
-	}
-	});
-	} */
-	/* function newInsert(){
-		var frm = $("#joinform")[0];
-		/* var uno = $("#uno").val(); */
-	// 					var tags = $('.sel option:selected').select2().text();
-	// 						var tno = $("input[name=tno]");
-	// 						tno.val('');
-	// 						var tnoNum = tno.val();
-	// 						console.log(tnoNum)
-	// 					$("input[name=tags]").val(tags);
-	//	frm.action='/member/newTag.do';
-	//frm.submit();
-	//태그 삭제		
-	function eraser(tno) {
-		//event.preventDefault();
-		//alert("id>>>"+event.srcElement.id);
-		/* alert("value>>>" + event.target.value); */
-		console.log("tno>>>>" + tno);
-		var id = '#tag'+tno; //두개가 합쳐져서 원하는 태그의 id가 됨
-		var btnId = '#delBtn'+tno;
-		
-		$(id).remove();//내가 선택한 li 삭제
-		$(btnId).remove();//내가 선택한 li 삭제
-		/* alert("delete success"); */
-	}
-
-	// 			/*태그 삭제입니다.*/
-	// 		  	function eraser(){
-	// 			    //event.preventDefault();
-	// 				//alert("id>>>"+event.srcElement.id);
-	// 				alert("value>>>"+event.target.value);
-	// 				var frm = $("#form")[0];
-	// 				/* var uno = $("#uno").val(); */
-	// 				var tno = event.target.value;
-	// 				var param = {"uno": uno, "tno": tno}
-	// 				console.log("uno>>>>" + uno);
-	// 				console.log("tno>>>>" + tno);
-	// 				alert("delete success");
-	// 				$("input[name=tno]").val(tno);
-	// 				//frm.action='/member/delUserTag.do';
-	// 				//frm.submit();
-	// 				$.ajax({
-	// 					contentType: 'application/json',
-	// 					type: 'POST',
-	// 					data: JSON.stringify(param),
-	// 					url: '/member/delUserTag.do',
-	// 					success: function(data){
-	// 						alert("success");
-
-	// 						$('#'+data.tno+'').remove();//내가 선택한 li 삭제
-	// 					},
-	// 					error: function(jqXHR, textStatus, errorThrown){
-	// 						alert("ERROR : " + textStatus + " : " + errorThrown);
-	// 					}	
-	// 				});
-	// 			}  
-
-	//insert 태그 end
-</script>
-</head>
-
 <body>
 
 	<div class="container">
-		<div class="img_back"></div>
 		<div class="wrap" style="height: 100vh">
 			<div class="box">
-				<h4 style="line-height: 3;">회원가입</h4>
+			<h4>회원가입</h4>
 				<div class="card">
-					<div class="card-body" style="padding: 60px 50px">
+					<div class="card-body">
 						<form id="joinfrm" action="/member/memberjoin" autocomplete="off"
 							method="post">
 
 							<div class="form-group">
-								<span>아이디</span><input type="text" class="form-control form_first" name="userid"
-									id="userid" placeholder="아이디">
-								<div class="check_wrap">
-									<button type="button" id="idChk">중복 확인</button>
-									<span id="idChktxt" style="height: 18px;"></span>
-								</div>
+								아이디<input type="text" class="form-control" name="userid" id="userid" placeholder="아이디">
+								<button type="button" id="idChk">중복 확인</button>
+								<span id="idChktxt"></span>
 							</div>
 
 							<div class="form-group">
-								비밀번호<input type="password" class="form-control" name="userpw"
-									id="userpw" placeholder="비밀번호"> <span id="pwtxt"></span>
+								비밀번호<input type="password" class="form-control" name="userpw" id="userpw" placeholder="비밀번호">
+								<span id="pwtxt"></span>
 							</div>
-
+							
 							<div class="form-group">
-								비밀번호 확인<input type="password" class="form-control" id="repw"
-									placeholder="비밀번호 확인"> <span id="pwchtxt"></span>
+								비밀번호 확인<input type="password" class="form-control" id="repw" placeholder="비밀번호 확인">
+								<span id="pwchtxt"></span>
 							</div>
-
+							
 							<div class="form-group">
-								닉네임<input type="text" class="form-control" name="nickname"
-									id="nickname" placeholder="닉네임"> <span id="nicknametxt"></span>
+								닉네임<input type="text" class="form-control" name="nickname" id="nickname" placeholder="닉네임">
+								<span id="nicknametxt"></span>
 							</div>
-
+							
 							<div class="form-group">
-								이메일<input type="text" class="form-control" name="email"
-									id="email" placeholder="이메일"> <span id="emailtxt"></span>
-								<!-- <span class="errorMsg" th:if="${errorMsg} =='fail'" id="errorMsg">00이메일에러000</span> -->
+								이메일<input type="text" class="form-control" name="email" id="email" placeholder="이메일">
+							<span id="emailtxt"></span> 
+							<!-- <span class="errorMsg" th:if="${errorMsg} =='fail'" id="errorMsg">00000000</span> -->
 							</div>
-
+							
 							<div class="form-group">
-								한줄소개<input type="text" class="form-control" name="introduce"
-									id="introduce" placeholder="한줄소개">
+								한줄소개<input type="text" class="form-control" name="introduce" id="introduce" placeholder="한줄소개">
 							</div>
-
-
-							<!-- 여기서부터 태그추가 입니다. -->
-							<form>
-								<label for="exampleDataList" class="form-label">태그 추가</label><br>
-								<select class="form-control-ajax sel">
-									<option value="">선택해주세요.</option>
-									<option th:each="tagvo : ${tagvo}" th:text="${tagvo.tags}"
-										th:value="${tagvo.tno}" style="color: black;"></option>
-									<!-- 값은 tno, 눈에보이는건text 이걸로 뿌려주면-->
-								</select> <input type="hidden" name="tags">
-								<!-- 임시 -->
-								<input type="hidden" name="tno">
-
-								<button type="button" class="btn btn-secondary" id="insertTag"
-									name="insertTag">추가</button>
-
-								<!-- 								<span id="tagChktxt"></span>  -->
-								<!-- <span th:text="${TagErrorMsg} == fail">컨트롤러에서 넘어온 TagErrorMsg</span> -->
-
-								<div class="d-flex justify-content-center tags">
-									<ul class="row justify-content-center list-icons" id="addTag">
-										<li>
-											<!-- 	<li class="flex" th:id="${tagvo.tno}" th:each="tagvo,i : ${tagvo}" > -->
-											<!-- <button type="button" class="delBtn" th:id="delUserTag+${i.index}" onClick="eraser()" th:value="${tagvo.tno}" > -->
-											
-										</li>
-									</ul>
-									<button type="button" class="delBtn" id="delBtn" onClick="eraser()" style="display:none">
-												<i id="xBtn" class="bi bi-x-circle"></i>
-
-											</button>
-								</div>
-
+						
+						
+						<!-- 여기서부터 태그추가 입니다. -->	
+						<label for="exampleDataList" class="form-label">태그 추가</label><br>
+						<select class="form-control-ajax sel">
+						  <option value="" >선택해주세요.</option>
+						  <option th:each="tagvo : ${tagvo}" th:text="${tagvo.tags}" th:value="${tagvo.tno}" style="color:black;"></option><!-- 값은 tno, 눈에보이는건text 이걸로 뿌려주면-->
+						</select>
+						<input type="hidden" name="tags"><!-- 임시 -->
+						<input type="hidden" name="tno">
+						
+						<button type="button" class="btn btn-secondary" id="insertTag" name="insertTag">추가</button>
+						
+						<div class="d-flex justify-content-center mt-5 tags">
+							<ul class="row justify-content-center list-icons">
 								<!-- 임시로 버튼 비활성화 -->
+								<li class="flex" th:each="tagList,i : ${tagList}"><button disabled>
+								<span th:text="${tagList.tags}"></span></button><!-- 추가한 태그가 들어가는 곳 -->
+									<button class="delBtn" th:id="delUserTag+${i.index}" onClick="eraser()" th:value="${tagList.tno}"><i class="bi bi-x-circle"></i></button></li><!-- 태그 삭제버튼 -->
+							</ul>
+							<input type="hidden" name="tno">
+						</div>
+						<!-- <!-- 필수 유저 번호(uno) -->
+						<!-- <input type="hidden" id="uno" name="uno" th:value="${mvo.uno}"> -->
+					</form>
 
-								<input type="hidden" name="tno">
-
-								<!--태그 삭제버튼 -->
-
-							</form>
-						</form>
 						<button id="join">가입 하기</button>
-
 						<!-- 문제점 : 없는 아이디로 중복확인을 하고 있는 거 치면 가입이 돼 버림 -->
-						<!-- 				th:each문			http://yoonbumtae.com/?p=1847 -->
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 </body>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>
 </html>

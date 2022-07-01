@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+<title>글쓰기</title>
+<meta content="" name="description">
+<meta content="" name="keywords">
+
+<!-- Favicons -->
+<link href="/bootstrap/assets/img/favicon.png" rel="icon">
+<link href="/bootstrap/assets/img/apple-touch-icon.png"
+	rel="apple-touch-icon">
+
+<!-- Google Fonts -->
+<link
+	href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap"
+	rel="stylesheet">
+
+<!-- Vendor CSS Files -->
+<link href="/bootstrap/assets/vendor/bootstrap/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="/bootstrap/assets/vendor/animate.css/animate.min.css"
+	rel="stylesheet">
+<link href="/bootstrap/assets/vendor/icofont/icofont.min.css"
+	rel="stylesheet">
+<link href="/bootstrap/assets/vendor/boxicons/css/boxicons.min.css"
+	rel="stylesheet">
+<link href="/bootstrap/assets/vendor/venobox/venobox.css"
+	rel="stylesheet">
+<link
+	href="/bootstrap/assets/vendor/owl.carousel/assets/owl.carousel.min.css"
+	rel="stylesheet">
+<link href="/bootstrap/assets/vendor/aos/aos.css" rel="stylesheet">
+
+<!-- Template Main CSS File -->
+<link href="/bootstrap/assets/css/style.css" rel="stylesheet">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+	crossorigin="anonymous"></script>
+
+<link rel="stylesheet" th:href="@{/board/css/style.css}" />
+<link rel="stylesheet"
+	th:href="@{/board/plugin/mCustomScrollbar/jquery.mCustomScrollbar.min.css}" />
+
+<script th:src="@{/board/scripts/jquery.min.js}"></script>
+<script th:src="@{/board/plugin/bootstrap/js/bootstrap.min.js}"></script>
+<script
+	th:src="@{/board/plugin/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js}"></script>
+<script th:src="@{/board/plugin/common/moment.js}"></script>
+
+<script th:src="@{/board/scripts/main.js}"></script>
+<script th:src="@{/board/scripts/common.js}"></script>
+
+<!-- =======================================================
+  * Template Name: Moderna - v2.2.1
+  * Template URL: https://bootstrapmade.com/free-bootstrap-template-corporate-moderna/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+
+<style>
+ul, li {
+	list-style: none;
+}
+
+.tags {
+	margin-bottom: 30px;
+}
+
+.tags ul {
+	list-style: none;
+	padding: 0;
+}
+
+.tags ul li {
+	display: inline-block;
+}
+
+.tags ul a {
+	color: #444;
+	font-size: 14px;
+	padding: 6px 14px;
+	margin: 2px 6px 2px 0;
+	border: 1px solid #888;
+	display: inline-block;
+	transition: 0.3s;
+	border-radius: 50px;
+}
+
+.tags ul a:hover {
+	color: #fff;
+	border: 1px solid #029CEB;
+	background: #029CEB;
+}
+
+.tags ul a span {
+	padding-left: 5px;
+	color: #bedae8;
+	font-size: 14px;
+}
+
+.write_btn {
+	width: 120px;
+	background: #029CEB;
+	padding: 10px;
+	color: #fff;
+	border: none;
+	margin-top: 20px;
+}
+
+@media ( max-width : 767px) {
+	header {
+		display: none;
+	}
+	.section-bg {
+		background: none;
+	}
+}
+</style>
+</head>
+
+<body>
+	<main>
+		<!-- ======= Header ======= -->
+		<header id="header" class="fixed-top header-transparent">
+			<div class="container">
+
+				<div class="logo float-left">
+					<h1 class="text-light">
+						<a href="index.html"><span>Tag on me!</span></a>
+					</h1>
+				</div>
+
+				<nav class="nav-menu float-right d-none d-lg-block">
+					<ul>
+						<li class="active"><a href="index.html">Home</a></li>
+						<li><a href="board.html">게시판</a></li>
+						<li><a href="about.html">로그인</a></li>
+						<li><a href="services.html">회원가입</a></li>
+						<li><a href="http://naver.com" target="_black">채팅(i)</a></li>
+						<li class="drop-down"><a href="">내 정보(i)</a>
+							<ul>
+								<li><a href="#">내 프로필</a></li>
+								<li><a href="#">프로필 수정</a></li>
+								<li><a href="#">태그 추가</a></li>
+								<li><hr> <a href="#">로그 아웃</a></li>
+							</ul></li>
+					</ul>
+				</nav>
+				<!-- .nav-menu -->
+			</div>
+
+		</header>
+		<!-- End Header -->
+		<!-- ======= Write Section ======= -->
+		<section class="pricing section-bg" data-aos="fade-up">
+
+			<div class="mobile_top" data-aos="fade-down">
+				<li><h2 style="text-align: center; color: #444; font-size: 18px; font-weight: bold; margin: 4px 0;">글쓰기</h2></li>
+			</div>
+			<div class="container">
+				 <div class="row no-gutters">
+					<div class="col-lg-12 box featured config_area conf_box" style="padding-bottom: 10px;">
+			            <h2 style="text-align: left; color: #444; font-size: 18px; font-weight:bold; margin: 4px 0 28px;">태그 목록</h2>
+			            <div class="tags" th:each = "tagArray : ${tagLists}">
+			                <ul>
+			                  <li><a href="#" th:each = "tagNamelist : ${tagArray.tagNames}" th:text="${tagNamelist.tags}"></a></li>
+			                </ul>
+						</div>
+						<h2 style="text-align: left; color: #444; font-size: 18px; font-weight:bold; margin: 4px 0 28px;">태그 작성</h2>
+						<form th:action="@{/board/register.do}" method="post" enctype="multipart/form-data" onsubmit="return registerBoard(this)" role="form" class="write-form" th:object="${tagLists}">
+						<!--/* 저장된 태그가 없는 태그 영역 */-->
+							<div th:if="${#lists.isEmpty( tagLists )}" th:each="row, status: ${tagLists}"data-name="tagDiv" class="form-group filebox bs3-primary">
+								<label for="tag_0" class="col-sm-2 control-label">태그</label>
+								<div class="col-sm-10" th:each="i, itemStat : *{tagNames}">
+									<input type="text" class="upload-name" placeholder="태그를 입력해주세요" th:field="*{tagNames[__${itemStat.index}__].tags}"/>
+									<input type="text" name="tags" id="tag_0" class="upload-hidden" />
+									<button type="button" onclick="addTag()" class="btn btn-bordered btn-xs visible-xs-inline visible-sm-inline visible-md-inline visible-lg-inline">
+										<i class="fa fa-plus" aria-hidden="true"></i>
+									</button>
+								</div>
+							</div>
+
+						<!--/* 저장된 태그가 있는 태그 영역 */-->
+							<div th:unless="${#lists.isEmpty( tagLists )}" th:each="row, status : ${tagLists}" data-name="tagDiv" class="form-group filebox bs3-primary">
+								<label th:for="|tag_${status.index}|" class="col-sm-2 control-label">[[ |태그${status.count}| ]]</label>
+								<div class="col-sm-10" th:each="i, itemStat : *{tagNames}">
+									<input type="text" class="upload-name" name="tNames" th:field="*{tagNames[__${itemStat.index}__].tags}" /> 
+									<input type="file" name="files" th:id="|tag_${status.index}|" class="upload-hidden" />
+									<button th:if="${status.first}" type="button" onclick="addTag()" class="btn btn-bordered btn-xs visible-xs-inline visible-sm-inline visible-md-inline visible-lg-inline">
+										<i class="fa fa-plus" aria-hidden="true"></i>
+									</button>
+								</div>
+							</div>
+							<div id="addTag"></div>
+						</form>
+					</div>
+	       		</div>
+
+				<div class="col-lg-12 box write_box">
+
+					<form th:action="@{/board/register.do}" method="post" enctype="multipart/form-data" onsubmit="return registerBoard(this)" role="form" class="write-form" th:object="${board}">
+						<input type="hidden" th:if="*{bno != null and bno > 0}" th:field="*{bno}" /> 
+						<input type="hidden" th:field="*{changeYn}" value="N" />
+											
+						<h3 style="text-align: left; color: #444; font-size: 18px; font-weight: bold; margin: 4px 0 16px;">제목</h3>
+						<div class="form-group" style="margin-bottom: 40px;">
+							<input type="text" class="form-control" name="title" id="title"
+								placeholder="제목을 입력하세요" data-rule="minlen:4" th:field="*{title}" />
+						</div>
+						<h3 style="text-align: left; color: #444; font-size: 18px; font-weight: bold; margin: 4px 0 16px;">작성자</h3>
+						<div class="form-group" style="margin-bottom: 40px;">
+							<input type="text" class="form-control" name="writer" id="writer"
+								data-rule="minlen:4" th:value="${member.userid}" readonly />
+						</div>
+						<div class="form-group">
+							<h3 style="text-align: left; color: #444; font-size: 18px; font-weight: bold; margin: 4px 0 16px;">내용</h3>
+							<textarea class="form-control" name="content" id="content" rows="5" data-rule="required" placeholder="내용을 입력하세요" 	th:field="*{content}"></textarea>
+						</div>
+						
+						
+												
+						<!--/* 저장된 파일이 없는 파일 영역 */-->
+						<div th:if="${#lists.isEmpty( fileList )}" data-name="fileDiv" class="form-group filebox bs3-primary">
+							<label for="file_0" class="col-sm-2 control-label">파일</label>
+							<div class="col-sm-10">
+								<input type="text" class="upload-name" value="파일 찾기" readonly />
+								<label for="file_0" class="control-label">찾아보기</label> <input
+									type="file" name="files" id="file_0" class="upload-hidden"
+									onchange="changeFilename(this)" />
+
+								<button type="button" onclick="addFile()"
+									class="btn btn-bordered btn-xs visible-xs-inline visible-sm-inline visible-md-inline visible-lg-inline">
+									<i class="fa fa-plus" aria-hidden="true"></i>
+								</button>
+							</div>
+						</div>
+
+						<!--/* 저장된 파일이 있는 파일 영역 */-->
+						<div th:unless="${#lists.isEmpty( fileList )}" th:each="row, status : ${fileList}" data-name="fileDiv" class="form-group filebox bs3-primary">
+							<label th:for="|file_${status.index}|"
+								class="col-sm-2 control-label">[[ |파일${status.count}| ]]</label>
+							<div class="col-sm-10">
+								<input type="hidden" name="fileIdxs" th:value="${row.bno}" /> <input
+									type="text" class="upload-name" th:value="${row.originalName}"
+									readonly /> <label th:for="|file_${status.index}|"
+									class="control-label">찾아보기</label> <input type="file"
+									name="files" th:id="|file_${status.index}|"
+									class="upload-hidden" onchange="changeFilename(this)" />
+
+								<button th:if="${status.first}" type="button"
+									onclick="addFile()"
+									class="btn btn-bordered btn-xs visible-xs-inline visible-sm-inline visible-md-inline visible-lg-inline">
+									<i class="fa fa-plus" aria-hidden="true"></i>
+								</button>
+							</div>
+						</div>
+
+						<div id="btnDiv" class="btn_wrap text-center"
+							th:object="${params}">
+							<button type="submit"
+								class="btn btn-primary waves-effect waves-light">저장하기</button>
+							<a th:href="|@{/board/list.do}*{makeQueryString(currentPageNo)}|"
+								class="btn btn-default waves-effect waves-light">뒤로가기</a>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</section>
+		<!-- End Write Section -->
+
+	</main>
+	<!-- End #main -->
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+
+		function registerBoard(form) {
+			e.preventDefault();	
+			
+				var result = (
+						   isValid(form.title, "제목", null, null)
+						&& isValid(form.writer, "이름", null, null)
+						&& isValid(form.content, "내용", null, null)
+				);
+			
+				if ( result == false ) {
+					return false;
+				}
+
+				var bno = /*[[ ${board.bno} ]]*/;
+							
+				if (isEmpty(bno) == false) {
+					var queryString = /*[[ ${params.makeQueryString(params.currentPageNo)} ]]*/;
+			
+					/*[- 쿼리 스트링을 오브젝트 형태로 변환 -]*/
+					queryString = new URLSearchParams(queryString);
+					queryString.forEach(function(value, key) {
+						if (isEmpty(value) == false) {
+							$(form).append('<input type="hidden" name="' + key + '" value="' + value + '" />');
+						}
+					});
+				}
+			}
+			/*[- end of function -]*/
+			
+			/* 여기까지가 게시판 업로드 부분 */
+			
+			const fileList = /*[[ ${fileList} ]]*/; /*[- 업로드 파일 리스트 -]*/
+			let fileIdx = isEmpty(fileList) ? 0 : fileList.length; /*[- 파일 인덱스 처리용 전역 변수 -]*/
+		
+			function addFile() {
+			
+				const fileDivs = $('div[data-name="fileDiv"]');
+				if (fileDivs.length > 9) {
+					alert('파일은 최대 10 개까지 업로드 할 수 있습니다.');
+					return false;
+				}
+			
+				fileIdx++;
+			
+				const fileHtml = `
+					<div data-name="fileDiv" class="form-group filebox bs3-primary">
+						<label for="file_${fileIdx}" class="col-sm-2 control-label"></label>
+						<div class="col-sm-10">
+							<input type="text" class="upload-name" value="파일 찾기" readonly />
+							<label for="file_${fileIdx}" class="control-label">찾아보기</label>
+							<input type="file" name="files" id="file_${fileIdx}" class="upload-hidden" onchange="changeFilename(this)" />
+			
+							<button type="button" onclick="removeFile(this)" class="btn btn-bordered btn-xs visible-xs-inline visible-sm-inline visible-md-inline visible-lg-inline">
+								<i class="fa fa-minus" aria-hidden="true"></i>
+							</button>
+						</div>
+					</div>
+				`;
+			
+				$('#btnDiv').before(fileHtml);
+			}
+		
+	/*[- end of function -]*/
+	
+	function removeFile(elem) {
+
+		document.getElementById('changeYn').value = 'Y';
+	
+		const prevTag = $(elem).prev().prop('tagName');
+		if (prevTag === 'BUTTON') {
+			const file = $(elem).prevAll('input[type="file"]');
+			const filename = $(elem).prevAll('input[type="text"]');
+			file.val('');
+			filename.val('파일 찾기');
+	
+			$(elem).prevAll('input[name="fileIdxs"]').remove();
+			return false;
+		}
+	
+		const target = $(elem).parents('div[data-name="fileDiv"]');
+		target.remove();
+	}
+	/*[- end of function -]*/
+
+	function changeFilename(file) {
+
+		document.getElementById('changeYn').value = 'Y';
+	
+		file = $(file);
+		const filename = file[0].files[0].name;
+		const target = file.prevAll('input.upload-name');
+		target.val(filename);
+
+		file.prevAll('input[name="fileIdxs"]').remove();
+	}
+	/*[- end of function -]*/
+	
+	/* 여기까지가 파일 업로드 부분 */ 
+	
+	const tagLists = /*[[ ${tagLists} ]]*/; /*[- 태그 리스트 -]*/
+	let tagIdx = isEmpty(tagLists) ? 0 : tagList.length; /*[- 태그 인덱스 처리용 전역 변수 -]*/
+		
+			function addTag() {
+			
+				const tagDivs = $('div[data-name="tagDiv"]');
+			
+				tagIdx++;
+			
+				const tagHtml = `
+					<div data-name="tagDiv" class="form-group filebox bs3-primary">
+						<label for="tag_${tagIdx}" class="col-sm-2 control-label"></label>
+						<div class="col-sm-10">
+							<input type="text" class="upload-name" placeholder="태그를 입력해주세요" />
+							<input type="text" name="tags" id="tag_${tagIdx}" class="upload-hidden" />
+			
+							<button type="button" onclick="removeTag(this)" class="btn btn-bordered btn-xs visible-xs-inline visible-sm-inline visible-md-inline visible-lg-inline">
+								<i class="fa fa-minus" aria-hidden="true"></i>
+							</button>
+						</div>
+					</div>
+				`;
+			
+				$('#addTag').before(tagHtml);
+			}
+		
+	/*[- end of function -]*/
+	
+	function removeTag(elem) {
+
+		document.getElementById('changeYn').value = 'Y';
+	
+		const prevTag = $(elem).prev().prop('tagName');
+		if (prevTag === 'BUTTON') {
+			const tag = $(elem).prevAll('input[type="text"]');
+			file.val('');
+	
+			$(elem).prevAll('input[name="tagIdxs"]').remove();
+			return false;
+		}
+	
+		const target = $(elem).parents('div[data-name="tagDiv"]');
+		target.remove();
+	}
+	/*[- end of function -]*/
+	
+		/*]]>*/
+</script>
+
+	<a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+	<!-- Vendor JS Files -->
+	<script src="/bootstrap/assets/vendor/jquery/jquery.min.js"></script>
+	<script
+		src="/bootstrap/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script
+		src="/bootstrap/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+	<script src="/bootstrap/assets/vendor/php-email-form/validate.js"></script>
+	<script src="/bootstrap/assets/vendor/venobox/venobox.min.js"></script>
+	<script
+		src="/bootstrap/assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+	<script src="/bootstrap/assets/vendor/counterup/counterup.min.js"></script>
+	<script src="/bootstrap/assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+	<script
+		src="/bootstrap/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+	<script src="/bootstrap/assets/vendor/aos/aos.js"></script>
+
+	<!-- Template Main JS File -->
+	<script src="/bootstrap/assets/js/main.js"></script>
+
+</body>
+
+</html>

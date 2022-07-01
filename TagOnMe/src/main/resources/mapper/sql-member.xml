@@ -3,20 +3,18 @@
 <mapper namespace="com.ds.mapper.MemberMapper">
 	<resultMap type="com.ds.domain.MemberVO" id="memberVO">
 		<result property="userid" column="USERID" />
-		<result property="userpw" column="USERPW" />
-		<result property="nickname" column="NICKNAME" />
-		<result property="regdate" column="REGDATE" />
-		<result property="email" column="EMAIL" />
-		<result property="introduce" column="INTRODUCE" />
+	    <result property="userpw" column="USERPW" />
+	    <result property="nickname" column="NICKNAME" />
+	    <result property="regdate" column="REGDATE" />
+	    <result property="email" column="EMAIL" />
+	    <result property="introduce" column="INTRODUCE" />
 	</resultMap>
-
+	
 	<resultMap type="com.ds.domain.TagVO" id="TagVO">
-		<result property="uno" column="uno" />
 		<result property="tno" column="tno" />
 		<result property="tags" column="tags" />
-		<result property="leader" column="leader" />
 	</resultMap>
-
+	
 	<select id="read" resultMap="memberVO">
 		<!-- 회원정보를 읽 -->
 		<![CDATA[
@@ -25,79 +23,34 @@
 	</select>
 
 	<insert id="insert" parameterType="com.ds.domain.MemberVO">
-		<!-- 회원가입 : 회원정보 넣음 -->
-		<selectKey keyProperty="uno" resultType="Integer" order="BEFORE">
-			select SEQ_TOM_MEMBER_INFO.nextval from dual
-		</selectKey>
-		INSERT INTO tom_member_info (uno, userid, userpw, nickname,regdate, email, introduce)
-		VALUES(#{uno}, #{userid}, #{userpw}, #{nickname},sysdate, #{email}, #{introduce})
+		<!-- 회원가입 -->
+		<![CDATA[
+			insert into tom_member_info(uno, userid, userpw, nickname, email, introduce)
+			values
+			(seq_tom_member_info.nextval,#{userid}, #{userpw}, #{nickname}, #{email}, #{introduce})
+		]]>
 	</insert>
-
-<!-- 	<insert id="insertTags" parameterType="com.ds.domain.TagVO">
-		회원가입 : 태그s
-		<selectKey keyProperty="tno" resultType="Integer" order="BEFORE">
-			select SEQ_TOM_TAGS.nextval from dual
-		</selectKey>
-		insert INTO tom_tags (tno,tags) VALUES(#{tno},#{tags})
-	</insert>
- -->
-	<insert id="insertTagUser" parameterType="com.ds.domain.TagVO">
-<!-- 		회원가입 : 태그유저 -->
-		<selectKey keyProperty="tuno" resultType="Integer" order="BEFORE">
-			select SEQ_TOM_MEMBER_INFO.nextval from dual
-		</selectKey>
-		insert INTO tom_tag_user (tuno,uno,tno,leader)
-		VALUES(#{tuno}, #{uno},#{tno}, default)
-	</insert>
-
-
-	<!-- <insert id="insert" parameterType="com.ds.domain.MemberVO"> -->
-	<!-- 회원가입 -->
-	<!-- <selectKey keyProperty="tno" resultType="int" order="AFTER"> -->
-
-	<!-- INSERT ALL -->
-	<!-- INTO tom_member_info (uno, userid, userpw, nickname,regdate, email, 
-		introduce) VALUES(SEQ_TOM_MEMBER_INFO.nextval, #{userid}, #{userpw}, #{nickname},#{sysdate}, 
-		#{email}, #{introduce}) -->
-	<!-- select * from tom_member_info</selectKey> -->
-	<!-- </insert> -->
-
-	<!-- INTO tom_tag_user * VALUES(SEQ_TOM_TAG_USER.nextval, SEQ_TOM_MEMBER_INFO.nextval,SEQ_TOM_TAGS.nextval, 
-		default) -->
-	<!-- INTO tom_tags * VALUES(SEQ_TOM_TAGS.nextval,#{tags}) -->
-
-
-	<!-- insert into tom_member_info(uno, userid, userpw, nickname, email, introduce) 
-		values (seq_tom_member_info.nextval,#{userid}, #{userpw}, #{nickname}, #{email}, 
-		#{introduce}) -->
-	<!-- <selectKey keyProperty="tuno" resultType="int" order="BEFORE"> -->
-	<!-- select SEQ_TOM_TAG_USER.nextval from dual </selectKey> -->
-	<!-- insert into tom_tag_user(tuno,uno,tno,leader) values(#{tuno},#{uno},#{tno},default 
-		) -->
-	<!-- </insert> -->
-
-
-	<!-- 아이디 중복체크 -->
-	<select id="idChk" resultType="int">
-		select count(*) from
-		tom_member_info
-		where userid = #{userid, jdbcType=VARCHAR}
-
-	</select>
-
-	<select id="login" parameterType="com.ds.domain.MemberVO"
-		resultMap="memberVO">
-		<!-- 로그인 -->
+	
+	
+ 	<!-- 아이디 중복체크 -->
+ 	<select id="idChk" resultType="int">
+ 		select count(*) from tom_member_info
+ 		where userid = #{userid, jdbcType=VARCHAR}
+ 		
+ 	</select>
+	
+	<select id="login" parameterType="com.ds.domain.MemberVO" resultMap="memberVO">
+	<!-- 로그인 -->
 	<![CDATA[
 			select * from tom_member_info where userid = #{userid} and userpw = #{userpw}
 		]]>
 	</select>
-
+	
 	<update id="updatePw" parameterType="com.ds.domain.MemberVO">
 		<!-- 비밀번호만 수정 -->
-		UPDATE tom_member_info
-		SET userpw=#{userpw}
-		WHERE userid=#{userid}
+			UPDATE tom_member_info
+			SET userpw=#{userpw}
+			WHERE userid=#{userid}
 	</update>
 	
 	<select id="readTag" resultType="com.ds.domain.TagVO" resultMap="TagVO">
@@ -218,9 +171,4 @@
 		and u.uno = #{uno} and t.tno = u.tno
 	</select> 
 	<!-- end get new tag -->
-	
-	<!-- 태그 중복 체크 -->
-	<select id="tagCheck" resultType="com.ds.domain.TagVO" parameterType="com.ds.domain.TagVO">
-		select * from tom_tags where tags = #{tags}
-	</select>
 </mapper>

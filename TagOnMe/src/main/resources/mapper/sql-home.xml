@@ -55,49 +55,4 @@
 	
 	</select>
 	
-	<select id="userCount" resultType="int">
-	
-	<![CDATA[
-			SELECT COUNT(userid) from tom_member_info
-		]]>
-	
-	</select>
-	
-	<select id="userTagCount" resultType="int">
-	
-	<![CDATA[
-			SELECT COUNT(tno) from tom_tag_user
-		]]>
-	
-	</select>
-	
-	<select id="boardTagCount" resultType="int">
-	
-	<![CDATA[
-			SELECT COUNT(tno) from tom_tag_board
-		]]>
-	
-	</select>
-	
-	<select id="tagList20" resultType="String">
-	
-	<![CDATA[
-			select tags
-			from (
-			    select tags, count(tags) as tagCount
-			    from tom_tags name,
-			    (
-			        select tno from tom_tag_board
-			        union all
-			        select tno from tom_tag_user
-			    )al
-			    where al.tno = name.tno
-			    group by tags, name.tno
-			    order by name.tno desc
-			)
-			WHERE ROWNUM <= 20
-		]]>
-	
-	</select>
-	
 </mapper>

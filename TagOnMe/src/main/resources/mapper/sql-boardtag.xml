@@ -31,12 +31,8 @@
 		                    where board.bno = #{bno})
 	</select>
 	
-	<select id="selectSearchTagListForNull" resultType="TagBoardDTO">
-		select tno, tags as otherTags from tom_tags tags
-	</select>
-	
 	<select id = "selectTagDetail" parameterType="long" resultMap="TagBoardDTO">
-		select tag.tno, bno, tags
+		select tags
 		from tom_tag_board board, tom_tags tag
 		where tag.tno = board.tno and bno = #{bno}
 	</select>
@@ -62,7 +58,7 @@
 	<!-- end old insert userTag -->
 
 	<!-- start insert new tag -->
-	<insert id="newTag" parameterType="com.ds.domain.TagBoardDTO">
+	<insert id="newTag" parameterType="com.ds.domain.TagDTO">
 		<selectKey keyProperty="tno" resultType="long" order="BEFORE">
 			select SEQ_TOM_TAGS.nextval from dual
 		</selectKey>
@@ -77,14 +73,14 @@
 			select SEQ_TOM_TAG_BOARD.nextval from dual
 		</selectKey>
 		insert into tom_tag_board(tbno,bno,tno)
-		values(#{tbno},#{bno},#{tno})
+		values(#{tbno},#{bno},#{tno} )
 	</insert>
 	<!-- end new insert userTag -->
 
 	<!-- start delete boardTag -->
 	<delete id="delBoardTag" parameterType="TagBoardDTO">
 		delete from tom_tag_board
-		where tno = #{tno} and bno = #{bno}
+		where tno = #{tno} and uno = #{uno}
 	</delete>
 	<!-- end delete userTag -->
 

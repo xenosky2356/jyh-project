@@ -2,16 +2,15 @@
 
 
 header{
-	width: 620px;
+	width: 100%;
 	box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
 	background: #fff;
-	margin: 62px auto;
 }
 
 header h1{
 	color: #444;
 	text-align: left;
-	font-size: 24px;
+	font-size: 18px;
 	font-weight: bold;
 	padding: 14px 0;
 	margin-bottom: 36px;
@@ -158,8 +157,7 @@ th, td{
 .mesgs {
   float: left;
   padding: 30px 15px 0 25px;
-  width: 100%;
-  background: #e6f6ff;
+  width: 99%;
 }
 
  .chating .me{

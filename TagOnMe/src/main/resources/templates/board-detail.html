@@ -196,9 +196,7 @@
 					                  	<a href="" th:text=*{writer}></a>
 					                  	<ul>
 											<li><a th:href="|@{/member/openProfileList.do/{writer}(writer=*{writer})}|">프로필</a></li>
-											<li th:if="${member} != 'null'">
-												<a href="#" th:onclick="goRoom([[*{writer}]] ,[[ ${member.userid} ]] )" >채팅</a>
-											</li>
+											<li th:if="${member} != 'null'"><a th:href="|@{/room}|">채팅</a></li>
 											<li th:unless="${member} != 'null'"></li>
 										</ul>
 					                  </li>
@@ -213,7 +211,7 @@
 									</li>
 									<li class="d-flex align-items-center">
 										<i class="icofont-comment"></i>
-										<ul th:each="getTag : ${openTagList}">
+										<ul th:each="getTag : ${taglist}">
 											<ul th:each="getTagName : ${getTag.tagNameList}" th:text="${getTagName.tags}"> </ul>
 										</ul>
 									</li>
@@ -431,88 +429,6 @@
         }
       }, "json");
     }
-    
-/* ============= < 채팅 > ============================================================================================ */
-    
-	var liveRoomList = []; // [] = new Array();
-
-function Room(roomNumber, roomName){
-	this.roomNumber = roomNumber;
-	this.roomName = roomName;
-	this.toString = function (){
-		return 'roomNumber:' + this.roomNumber + ' /roomName:' + this.roomName;
-	};
-}
-
-$(document).ready(function(){
-});	
-
-function getRoomList(){
-	var usession = [[${me}]];
-	console.log("로그인한 아이디 : " + usession);
-	
-	commonAjax('/getAllRoom', "", 'post', function(result){
-		if(result != null){
-			result.forEach(function(data, idx){
-                console.log("From Server:" + ++idx + " 방번호:" + data.roomName.trim() + "/" + data.roomNumber);
-			});
-		}
-	});
-}
-
-function createRoom(roomName){
-	var msg = {roomName: roomName};
-
-	commonAjax('/createRoom', msg, 'post', function(result){
-		if(result != null){
-			console.log(result);
-			liveRoomList.push(new Room(result, roomName));
-			printRoomList();
-		}
-	});
-}
-
- function goRoom(you, me){
-	
-	let name = (you < me) ? you + "_" + me : me + "_" + you;
-	let msg = {roomName: name};
-
-	commonAjax('/getRoom', msg, 'post', function(result){
-        console.log("result: " +result);
-		makeRoom(msg, result);
-	});
-} 
-
-
-function makeRoom(msg, result){
-	if(result == undefined || result == null || result == ''){	//방
-		commonAjax('/createRoom', msg, 'post', function(res){
-			console.log("name: "+ res.roomName + "/number: "+res.roomNumber);
-			location.href = "/moveChatting?roomName="+res.roomName+"&"+"roomNumber="+res.roomNumber;
-		});
-	} else {
-        location.href = "/moveChatting?roomName=" + result.roomName + "&" + "roomNumber=" + result.roomNumber;
-	}	
-} 
-
-
-
-function commonAjax(url, parameter, type, calbak, contentType){
-	$.ajax({
-		url: url,
-		data: parameter,
-		type: type,
-		contentType : contentType!=null?contentType:'application/x-www-form-urlencoded; charset=UTF-8',
-		success: function (res) {
-			calbak(res);
-		},
-		error : function(err){
-			console.log('error');
-			calbak(err);
-		}
-	});
-}
-    
     
   	/*[- end of function -]*/
     /*]]>*/

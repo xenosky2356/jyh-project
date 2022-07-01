@@ -75,7 +75,7 @@
 	
 	window.onload = function(){
 		getRoom();
-		
+		createRoom();
 		//console.log(sessionId);
 	}
 
@@ -84,7 +84,7 @@
 		console.log("로그인한 아이디" + usession);
 		
 		commonAjax('/getRoom', "", 'post', function(result){
-			
+			createChatingRoom(result);
 		});
 	}
 	
@@ -93,8 +93,8 @@
 			var msg = {	roomName : $('#roomName').val()	};
 
 			commonAjax('/createRoom', msg, 'post', function(result){
-/* 				createChatingRoom(result);
- */			});
+				createChatingRoom(result);
+			});
 
 			$("#roomName").val("");
 		});
@@ -104,7 +104,7 @@
 		location.href="/moveChating?roomName="+name+"&"+"roomNumber="+number;
 	}
 
-	/* function createChatingRoom(res){
+	function createChatingRoom(res){
 		if(res != null){
 			var tag = "<tr><th class='num'>순서</th><th class='room'>방 이름</th><th class='go'></th></tr>";
 			res.forEach(function(d, idx){
@@ -118,7 +118,7 @@
 			});
 			$("#roomList").empty().append(tag);
 		}
-	} */
+	}
 
 	function commonAjax(url, parameter, type, calbak, contentType){
 		$.ajax({
@@ -160,7 +160,9 @@
   </div>
   <table id="roomList" class="roomList">
 	<tr>
-		
+		<th>방 제목</th>
+		<th><input type="text" th:name="roomName" id="roomName"></th>
+		<th><button id="createRoom">방 만들기</button></th>
 	</tr>
 </table>
 </div>
