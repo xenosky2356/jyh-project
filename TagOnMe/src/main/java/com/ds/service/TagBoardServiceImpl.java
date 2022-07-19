@@ -3,6 +3,9 @@ package com.ds.service;
 import java.util.List;
 
 import com.ds.domain.TagVO;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TagBoardServiceImpl implements TagBoardService {
 
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	private TagBoardMapper tagBoardMapper;
 
@@ -26,6 +31,21 @@ public class TagBoardServiceImpl implements TagBoardService {
 	public List<TagBoardDTO> getTagDetail(Long bno) {
 		return tagBoardMapper.selectTagDetail(bno);
 	}
+	
+	@Override
+	public List<TagBoardDTO> getTagHitList(TagBoardDTO params) {
+		return tagBoardMapper.selectTagCount(params);
+	}
+	
+	@Override
+	public List<TagBoardDTO> getSearchTagList(Long bno) {
+		return tagBoardMapper.selectSearchTagList(bno);
+	}
+	
+	@Override
+	public List<TagBoardDTO> getSearchTagListForNull(TagBoardDTO params) {
+		return tagBoardMapper.selectSearchTagListForNull(params);
+	}
 
 	@Override//존재하는 유저태그 삽입
 	public void oldBoardTag(TagBoardDTO tagBoardDTO) {
@@ -37,11 +57,10 @@ public class TagBoardServiceImpl implements TagBoardService {
 		tagBoardMapper.delBoardTag(tagBoardDTO);
 	}
 
-	@Override
+	@Override 
 	public void newBoardTag(TagBoardDTO tagBoardDTO) {
 		tagBoardMapper.newBoardTag(tagBoardDTO);
 	}
-
 
 	@Override
 	@Transactional
@@ -50,14 +69,22 @@ public class TagBoardServiceImpl implements TagBoardService {
 		tagBoardMapper.newBoardTag(tagBoardDTO);
 	}
 
-
 	@Override
-	public List<TagBoardDTO> getTagHitList(TagBoardDTO params) {
-		return tagBoardMapper.selectTagCount(params);
+	public void oldBoardWriteTag(TagBoardDTO tagBoardDTO) {	
+		log.info(""+tagBoardDTO);
+		tagBoardMapper.oldBoardWriteTag(tagBoardDTO);
 	}
 
 	@Override
-	public List<TagBoardDTO> getSearchTagList(Long bno) {
-		return tagBoardMapper.selectSearchTagList(bno);
+	@Transactional
+	public void newBoardWriteTag(TagBoardDTO tagBoardDTO) {
+		tagBoardMapper.newTag(tagBoardDTO);
+		tagBoardMapper.newBoardWriteTag(tagBoardDTO);
+	}
+
+	@Override
+	public void delBoardWriteTag(TagBoardDTO tagBoardDTO) {
+		tagBoardMapper.delBoardWriteTag(tagBoardDTO);
+		
 	}
 }

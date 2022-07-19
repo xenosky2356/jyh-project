@@ -42,64 +42,91 @@
   <script src="/board/scripts/jquery.min.js"></script>
   <script src="/board/scripts/main.js"></script>
   <script src="/board/scripts/common.js"></script>
-  <style>
+ 
+<!-- bootstrap icons-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+		
   
-  ul, li {
-	list-style: none;
-}
-  .tags {
-	margin-bottom: 30px;
-}
 
-.tags ul {
-	list-style: none;
-	padding: 0;
-}
-
-.tags ul li {
-	display: inline-block;
-}
-
-.tags ul a {
-	color: #444;
-	font-size: 14px;
-	padding: 6px 14px;
-	margin: 2px 6px 2px 0;
-	border: 1px solid #888;
-	display: inline-block;
-	transition: 0.3s;
-	border-radius: 50px;
-}
-
-.tags ul a:hover {
-	color: #fff;
-	border: 1px solid #029CEB;
-	background: #029CEB;
-}
-
-.tags ul a span {
-	padding-left: 5px;
-	color: #bedae8;
-	font-size: 14px;
-}
-.tags ul button {
-  color: #444;
-  font-size: 14px;
-  padding: 6px 14px;
-  margin: 0 6px 8px ;
-  border: 1px solid #888;
-  display: inline-block;
-  transition: 0.3s;
-  border-radius: 50px;
-  background:none;
-}
-
-.tags ul button:hover {
-  color: #fff;
-  border: 1px solid #029CEB;
-  background: #029CEB;
-}
-  </style>
+  	<style>
+	
+	h3{
+		font-weight: bold;
+	}
+	
+	.btn-primary {
+    	background: #029ceb;
+	}
+	
+	.btn-primary:hover {
+    	background: #57cfff;
+	}
+	
+	.btn_hint{
+		background: none;
+	}
+	
+	.btn-primary{
+		width: 120px;
+	}
+	
+	.dropdown-lg{
+		box-sizing: content-box;
+	    border: 1px solid #ccd1d9;
+	    padding-bottom: 1px;
+	}
+	
+	.btn-default:hover{
+		background-color: #fff;
+		color: #029ceb;
+	}
+	
+	.entry .tags{
+		display: inline-block;
+		background: #ddecff;
+		border-radius: 30px;
+		font-size: 12px;
+		margin: 4px 6px 10px 0;
+	}
+	
+	.entry .tags:nth-child(2){
+		background: #239ef5;
+	}
+	
+	.entry > .tags:nth-child(2) a{
+		color: #fff;
+	}
+	
+	.entry > .tags ul{
+		list-style: none;
+		margin: 0;
+		padding: 4px 12px;
+	}
+	
+	.entry > .tags a{
+		color: #222;
+	}
+	
+	.pagination>.active>a{
+		background: none;
+		border: none;
+	}
+	
+	.pagination>.active>a:hover{
+		background: #029ceb;
+	}
+	
+	.blog .blog-pagination li{
+		border-radius: 4px;
+	}
+	
+	.pagination>li>a:hover{
+		background: none;
+		border-color: #029ceb;
+	}
+	
+	
+	</style>
 </head>
 
 <body>
@@ -167,8 +194,7 @@
                       aria-expanded="false"><span class="caret"></span></button>
                     <div class="dropdown-menu dropdown-menu-right" role="menu">
                       <!--/* 검색 form */-->
-                      <form id="searchForm" th:action="@{/board/list.do}" method="get"
-                        th:onsubmit="return searchBoard(this)" class="form-horizontal" role="form">
+                      <form id="searchForm" th:action="@{/board/list.do}" method="get" th:onsubmit="return searchBoard(this)" class="form-horizontal" role="form">
                         <!-- /* 현재 페이지 번호, 페이지당 출력할 데이터 개수, 페이지 하단에 출력할 페이지 개수 Hidden 파라미터 */ -->
                         <input type="hidden" name="currentPageNo" value="1" />
                         <input type="hidden" name="recordsPerPage" th:value="${params.recordsPerPage}" />
@@ -178,12 +204,9 @@
                           <label for="filter">검색 유형</label>
                           <select name="searchType" class="form-control">
                             <option value="" th:selected="${#strings.isEmpty( params.searchType )}">전체</option>
-                            <option value="title" th:selected="${#strings.equals( params.searchType, 'title' )}">제목
-                            </option>
-                            <option value="content" th:selected="${#strings.equals( params.searchType, 'content' )}">내용
-                            </option>
-                            <option value="writer" th:selected="${#strings.equals( params.searchType, 'writer' )}">작성자
-                            </option>
+                            <option value="title" th:selected="${#strings.equals( params.searchType, 'title' )}">제목 </option>
+                            <option value="content" th:selected="${#strings.equals( params.searchType, 'content' )}">내용 </option>
+                            <option value="writer" th:selected="${#strings.equals( params.searchType, 'writer' )}">작성자 </option>
                           </select>
                         </div>
                         <div class="form-group">

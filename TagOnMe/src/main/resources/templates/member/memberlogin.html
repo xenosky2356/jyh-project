@@ -68,10 +68,74 @@
 </script>
 </head>
 <style>
+
+html{
+	margin: 0;
+	padding: 0;
+}
+
+body{
+	position: relative;
+}
+
+.container{
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	scroll: hidden;
+	
+}
+
+.container::after{
+	content: "";
+	display: table;
+	clear: both;	
+	
+}
+
+.wrap::after{
+	content: "";
+	display: table;
+	clear: both;	
+	
+}
+
+.wrap{
+	width:100%;
+	overflow: hidden;
+	scroll: hidden;
+}
+
+
+.img_box{
+	width:50%;
+	height: 100%;
+	background: #000;
+	float: left;
+	 background: #ffffff url("../img/pietra-schwarzler-LsqyOTswTjw-unsplash.jpg") no-repeat right;
+	 background-size: cover;
+	 box-shadow: 0 0 8px 4px rgba(0,0,0,0.3);
+	 opacity: 80%;
+}
+
+h4{
+	margin-bottom: 10%;
+	text-align: center;
+	font-weight: 100;
+}
+
+.login_box{
+	width: 700px;
+	float: right;
+	position: absolute;
+	top: 0;
+	left: 45%;
+}
 .box {
-	width: 90%;
+	width: 70%;
 	max-width: 500px;
-	margin: 50px auto;
+	margin: 25% auto;
 }
 
 .card-body {
@@ -101,7 +165,7 @@ a {
 
 #idInput {
 	height: 50px;
-	margin-bottom: 50px;
+	margin-bottom: 55px;
 }
 
 #pwInput {
@@ -114,11 +178,50 @@ a {
 	display: block;
 	color: red;
 }
+.form-control{
+	border-radius: 0;
+	border: none;
+	border-bottom: 1px solid #cacaca;
+	margin-top: 8px;
+	
+	height: 40px;
+	
+}
+
+.form-group{
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.btn-primary{
+	margin-bottom: 8px;
+	border-radius: 0;
+	
+}
+
+#userid{
+	margin-bottom: 0;
+}
 
 @media ( max-width :747px) {
 	.wrap {
 		height: 100%;
 		width: 100%;
+	}
+	.login_box {
+		height: 100%;
+		width: 100%;
+		position: absolute;
+		top:0;
+		left:0;
+		margin:0;
+		padding:0;
+	}
+	.img_box{
+		display: none;
+	}
+	.box{
+		padding: 0;
 	}
 }
 
@@ -130,14 +233,16 @@ a {
 <body>
 	<div class="container">
 		<div class="wrap" style="height: 100vh">
-			<div class="box">
+			<div class="img_box"></div>
+			<div class="login_box">
+				<div class="box">
 				<h4>로그인</h4>
 				<div class="card">
 					<div class="card-body">
 						<form id="loginform" action="/member/memberlogin" method="post">
 
 							<div class="form-group" id="idInput">
-								ID<input type="text" class="form-control" name="userid" id="userid" placeholder="아이디"> 
+								ID<input type="text" class="form-control" name="userid" id="userid" placeholder="아이디" style="margin-bottom: 0;" > 
 									<span id="idChktxt"></span>
 							</div>
 							<div class="form-group last" id="pwInput">
@@ -157,6 +262,9 @@ a {
 					</div>
 				</div>
 			</div>
+			
+			</div>
+			
 		</div>
 	</div>
 

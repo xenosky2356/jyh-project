@@ -27,11 +27,29 @@ public class MemeberServiceImpl implements MemberService {
 	public MemberVO readMember(MemberVO vo) {
 		return membermapper.read(vo);
 	}
-
+	
 	@Override
-	public void insert(MemberVO vo) {
+	public void insert(MemberVO vo) {//회원가입시 회원정보추가
 		membermapper.insert(vo);
+		
 	}
+	
+	
+	
+	@Override
+	public void insertTagUser(TagVO tagvo) {
+		membermapper.insertTagUser(tagvo);
+	}
+
+//	@Override
+//	public void insertTags(TagVO tagvo) {
+//		membermapper.insertTags(tagvo);
+//	}
+//	
+	
+	
+	
+
 
 	@Override
 	public MemberVO login(MemberVO vo) {
@@ -51,11 +69,10 @@ public class MemeberServiceImpl implements MemberService {
 		return membermapper.idChk(id);
 	}
 
-	
 	//태그를 읽어옴
-		 @Override public List<TagVO> readTag() { 
-			 return membermapper.readTag(); }
-
+	 @Override 
+	 public List<TagVO> readTag() { 
+		 return membermapper.readTag(); }
 	@Override//프로필 오픈
 	public MemberVO readAllMember(int uno) {
 		return membermapper.readAllMember(uno);
@@ -120,10 +137,10 @@ public class MemeberServiceImpl implements MemberService {
 	public TagVO getNewTag(TagVO tagVO) {
 		return membermapper.getNewTag(tagVO);
 	}
+	
+	@Override
+	public TagVO tagCheck(TagVO tagVO) {
+		return membermapper.tagCheck(tagVO);
+	}
 
-
-
-//	@Override//프로필 유저태그 삽입
-//	public void insertTag(TagVO tvo) {
-//		mapper.insertTag(tvo);
 }

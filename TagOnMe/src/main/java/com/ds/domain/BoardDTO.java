@@ -37,5 +37,5 @@ public class BoardDTO extends CommonDTO {
 
 	/** 파일 인덱스 리스트 */
 	private List<Long> fileIdxs;
-
+	
 }

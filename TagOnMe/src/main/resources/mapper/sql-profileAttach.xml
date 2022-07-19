@@ -20,7 +20,7 @@
 		    VALUES (#{uno}, #{uuid}, #{filePath}, #{fileName})
 	</update>
 	
-	<select id="selectFileName" resultType="com.ds.domain.ProfileAttachVO">
-		select * from tom_profile_attach
+	<select id="selectFileName" resultType="com.ds.domain.ProfileAttachVO" parameterType="_int">
+		select * from tom_profile_attach where uno = #{uno}
 	</select>
 </mapper>

@@ -33,7 +33,7 @@
 			, 0
 			, '1'
 			, 'N'
-			, (select uno from tom_member_info where userid= #{writer})
+			, (select uno from tom_member_info where userid = #{writer})
 		)
 	</insert>
 

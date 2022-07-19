@@ -236,12 +236,12 @@
 						  <input type="submit" id="success" value="변경완료" style="width:80px;">
 						  <input class="form-control" type="file" id="file" name='file' required />
 						  <input type="hidden" id="uno" name="uno" th:value="${mvo.uno}"/>
+					   		<div class="image mr-3"> 
+					   			<img id="imgView" src="/member/display" onerror="this.src='https://placeimg.com/300/200/animals/sepia'" class="rounded-circle" width="100" height="100"/>
+							</div>
 					</form><!-- form태그 안이나 밖이나 이미지 실시간 변화 없음 -->
-					<form id="imgSpace" method="GET">
-				   		<div class="image mr-3"> 
-				   			<img id="imgView" th:attr="src=@{/member/display}" onerror="this.src='https://placeimg.com/300/200/animals/sepia'" class="rounded-circle" width="100" height="100"/>
-						</div>
-					</form>				
+					
+							
 						<br><br><br>
 						
 					<form id="form" method="post">
@@ -269,9 +269,9 @@
 						<div class="d-flex justify-content-center mt-5 tags">
 							<ul class="row justify-content-center list-icons" id="addTag">
 								<!-- 임시로 버튼 비활성화 -->
-								<li class="flex" th:id="${tagList.tno}" th:each="tagList,i : ${tagList}" >
+								<li class="flex" th:id="${tagList.tno}" th:each="tagList,i : ${tagList}">
 									
-									<button th:if="${tagList.leader} == '1'" style="background:#029ceb; color: white;" type="button" th:class="tagBtn+${tagList.tno}" th:id="${tagList.tno}" th:value="${tagList.leader}" onClick="leader()" th:text="${tagList.tags}"></button>
+									<button th:if="${tagList.leader} == '1'" style="background:#029ceb; color: #fff;" type="button" th:class="tagBtn+${tagList.tno}" th:id="${tagList.tno}" th:value="${tagList.leader}" onClick="leader()" th:text="${tagList.tags}"></button>
 									<button th:unless="${tagList.leader} == '1'" type="button" th:class="tagBtn+${tagList.tno}" th:id="${tagList.tno}" th:value="${tagList.leader}" onClick="leader()" th:text="${tagList.tags}"></button>
 									<button type="button" class="delBtn" th:id="delUserTag+${i.index}" onClick="eraser()" th:value="${tagList.tno}"><i class="bi bi-x-circle"></i></button></li>
 							</ul>
@@ -391,31 +391,44 @@
 					   
 					    
 					});  
+				     var rtn = true;
+				   
 				    $("#insertTag").on("click", function(){
-				    	var tno = $('.sel').select2().val(); 
-				    	var tags = $('.sel option:selected').select2().text();
+				    	var tno = $('.sel').select2().val();
+				    	var tags = $('.sel option:selected').select2().text();			
 				    	if(tags == ''){
 				    		alert('태그를 선택하세요');
 				    		return;
-				    	} else{
-				    		
-					    	if($.isNumeric(tno)){
-						    	oldInsert();				    		
-					    	} else{
-					    		newInsert();	
-					    	}				  
 				    	}
+				    	
+				    	if($.isNumeric(tno)){
+					    	oldInsert();
+					    	$('.sel').select2({
+								placeholder: '선택하여 주십시오.',
+								allowClear: true,
+								tags: true
+							});
+				    	} else{
+				    		newInsert();
+				    		
+				    		$('.sel').select2({
+								placeholder: '선택하여 주십시오.',
+								allowClear: true,
+								tags: true
+							});
+				    	}	
 				    });
+				    
 				    function oldInsert(){
-				    	var frm = $("#form")[0];
+				    	//var frm = $("#form")[0];
 						var uno = $("#uno").val();
 						var tags = $('.sel option:selected').select2().text();
 						var tno = $('.sel').select2().val();
 						var leader = 0; 
 						var param = {"uno": uno, "tno": tno, "tags": tags, "leader": leader}
-						/*alert("tno>>>"+tno);//잘나옴
-						alert("uno>>>"+uno);//잘나옴
-						alert("tags>>>"+tags);//잘나옴*/
+						//alert("tno>>>"+tno);//잘나옴
+						//alert("uno>>>"+uno);//잘나옴
+						//alert("tags>>>"+tags);//잘나옴
 						$("input[name=tno]").val(tno);
 						$("input[name=tags]").val(tags);
 						//frm.action='/member/oldUserTag.do';	
@@ -447,8 +460,8 @@
 						var leader = 0; 
 						var param = {"uno": uno, "tags": tags, "leader": leader}
 						
-						/*alert("uno>>>"+uno);//잘나옴
-						alert("tags>>>"+tags);//잘나옴*/
+						//alert("uno>>>"+uno);//잘나옴
+						//alert("tags>>>"+tags);//잘나옴
 
 						$("input[name=tags]").val(tags);
 					
@@ -459,11 +472,15 @@
 							data: JSON.stringify(param),
 							url: '/member/newTag.do',
 							success : function(data){
-								alert("success");
+								
+								if(data.tags == "fail"){
+									alert("중복됨");
+									return false;
+								}
 								var str = '<li class="flex" id="'+data.tno+'"><button type="button" class="tagBtn+'+data.tno+'" id="'+data.tno+'" value="'+data.leader+'" onClick="leader()">'+data.tags+'</button>'
 										 +'<button type="button" class="delBtn" id="delUserTag" onClick="eraser()" value="'+data.tno+'"><i class="bi bi-x-circle"></i></button></li>';
 								$('#addTag').append(str);//ul안에 li 넣으려고?
-										
+								alert("success");		
 							},
 							error: function(jqXHR, textStatus, errorThrown){
 								alert("ERROR : " + textStatus + " : " + errorThrown);
@@ -506,9 +523,9 @@
 				
 				/*리더태그*/
 				function leader(){
-					/*alert("id>>>"+event.target.id);
-					alert("value>>>"+event.target.value);
-					alert("text>>>"+event.target.textContent);*/ //태그 이름
+					//alert("id>>>"+event.target.id);
+					//alert("value>>>"+event.target.value);
+					//alert("text>>>"+event.target.textContent); //태그 이름
 					var frm = $("#form")[0];
 					var uno = $("#uno").val();
 					var tno = event.target.id;
@@ -526,10 +543,10 @@
 						data: JSON.stringify(param),
 						url: '/member/leaderTag.do',
 						success: function(data){
-							/*alert("leader shift success");
-							alert("data.leader>>>"+data.leader);
-							alert("data.tno>>>"+data.tno);
-							alert(".tagBtn"+data.tno);*/
+							//alert("leader shift success");
+							//alert("data.leader>>>"+data.leader);
+							//alert("data.tno>>>"+data.tno);
+							//alert(".tagBtn"+data.tno);
 							if(data.leader == '0'){
 								$(".tagBtn"+data.tno).css("background","#029ceb");
 								$(".tagBtn"+data.tno).css("color","#fff");
@@ -546,7 +563,7 @@
 					});		
 				}
 				
-				
+			
 
 			</script>
 			  <!-- Vendor JS Files -->

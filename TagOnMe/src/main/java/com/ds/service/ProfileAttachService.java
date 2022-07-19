@@ -8,5 +8,5 @@ public interface ProfileAttachService {
 	
 	public void insert(ProfileAttachVO vo);
 	//public boolean delProImage(String uuid);
-	public List<ProfileAttachVO> selectFileName();
+	public ProfileAttachVO selectFileName(int uno);
 }

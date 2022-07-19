@@ -1,5 +1,6 @@
 package com.ds.controller;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -107,29 +109,23 @@ public class MemberController {
 	}
 
 	@GetMapping("/memberjoin") // 회원가입
-	public String join(MemberVO vo,TagVO tagVO, Model model) {
+	public void join(MemberVO vo, TagVO tagVO, Model model) {
 		/* String result = ""; */
 		/*
 		 * if(vo==null) return; else model.addAttribute(vo);
 		 */
 		log.info("JOINGET");
-		
-		List<TagVO> tagvo = service.readTag();		 
-		
-		
-		if(tagvo != null) {
-			
-			model.addAttribute("tagvo", tagvo);
-			
-		}
-		return null;	
+
+		List<TagVO> tagvo = service.readTag();
+
+		model.addAttribute("tagvo", tagvo);
 
 	}
 
 	@PostMapping("/memberjoin") // 회원가입 버튼 누르면 insert
-	public String joinForm(MemberVO vo, Errors errors, RedirectAttributes ra) {
+	public String joinForm( MemberVO member,TagVO tagvo, @RequestParam String tno, Errors errors, RedirectAttributes ra) {//@Valid
 
-		log.info(vo.toString());
+		log.info(member.toString());
 		/*
 		 * if(errors.hasErrors()) {
 		 * 
@@ -150,10 +146,24 @@ public class MemberController {
 		 * 
 		 * } else { }
 		 */
-		service.insert(vo);
+		log.info("tno가 넘어왔나ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ? "+tno);
+		//회원가입안에 태그가 있으면 insert else errormsg반환
+		/*if(tno == null) {*/
+			
+			service.insert(member);
+			//service.insertTags(tagvo);
+			tagvo.setUno(member.getUno());
+			service.insertTagUser(tagvo);
+			return "redirect:/member/memberlogin";
+			
+			/*
+			 * }else { ra.addFlashAttribute("TagErrorMsg", "fail");// 뷰에보내는정보
+			 * 
+			 * } return "redirect:/member/memberjoin";
+			 */
+		
 
 		// }
-		return "redirect:/member/memberlogin";
 
 	}
 
@@ -226,7 +236,7 @@ public class MemberController {
     }
 
 
-    //프로필 오픈
+  //프로필 오픈
     @GetMapping("/openProfileList.do")
     public ModelAndView openProfile(MemberVO vo, HttpServletRequest request, Model model) throws Exception {
 
@@ -234,6 +244,8 @@ public class MemberController {
         model = commonService.loginUser(model, request);
         HttpSession session = request.getSession(true); // 세션가져오기 (true : 세션 생성)
         MemberVO member = (MemberVO) session.getAttribute("member");
+        ProfileAttachVO attachVo= profileAttachService.selectFileName(member.getUno());
+        
         if (member == null) {
             mv.setViewName("redirect:/member/memberlogin");
         } else {
@@ -245,6 +257,7 @@ public class MemberController {
             if (mvo != null) {
 
                 mv.addObject("mvo", mvo);
+                if(attachVo != null) mv.addObject("fileCallPath", attachVo.getUuid()+"_"+attachVo.getFileName());
                 mv.addObject("tagList", mvo.getTagList());
                 session.getAttribute("mvo");
 
@@ -288,30 +301,24 @@ public class MemberController {
 
     //프로필 이미지 보이기 다시 하기?
     @RequestMapping(value = "/display", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> displayImage() throws IOException {
-        MediaUtils mediaUtils = new MediaUtils();
-        InputStream in = null;
-        ResponseEntity<byte[]> entity = null;
-        List<ProfileAttachVO> attachList = profileAttachService.selectFileName();
-        for (ProfileAttachVO attachVO : attachList) {
+    @ResponseBody
+    public ResponseEntity<byte[]> displayImage(String fileName, HttpServletRequest request) throws IOException {
+    	log.info(">>>"+fileName);
+    	HttpSession session = request.getSession(true);
+    	MemberVO vo = (MemberVO) session.getAttribute("member");
+    	log.info(">>>"+vo.getUno());
+    	ProfileAttachVO attachVo= profileAttachService.selectFileName(vo.getUno());
+        File file = new File("c:\\profile-image\\"+attachVo.getUuid()+"_"+attachVo.getFileName());
+        ResponseEntity<byte[]> result = null;
+        HttpHeaders headers = new HttpHeaders();
+        
             try {
-                String fileName = attachVO.getFileName();
-                String uuid = attachVO.getUuid();
-                String filePath = attachVO.getFilePath();
-                String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
-                MediaType mType = mediaUtils.getMediaType(formatName);
-                HttpHeaders headers = new HttpHeaders();
-                in = new FileInputStream(filePath + "\\" + uuid + "_" + fileName);
-                headers.setContentType(mType);
-                entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
+                headers.add("Content-Type", Files.probeContentType(file.toPath()));
+                result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(file), headers, HttpStatus.OK);
             } catch (IOException e) {
-                e.printStackTrace();
-                entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
-            } finally {
-                in.close();
-            }
-        }
-        return entity;
+                e.printStackTrace();    
+            } 
+        return result;
     }
 
     //프로필 수정 오픈
@@ -350,8 +357,8 @@ public class MemberController {
         //log.debug(vo.getUno());
         attachVO.setUno(vo.getUno());
 
-        List<ProfileAttachVO> attachList = profileAttachService.selectFileName();
-        deleteFiles(attachList);
+        ProfileAttachVO attachVo = profileAttachService.selectFileName(vo.getUno());
+        //deleteFiles(attachVo);
 
         profileAttachService.insert(attachVO);
 
@@ -374,7 +381,7 @@ public class MemberController {
         return "redirect:openProfileList.do";
     }
 
-
+/*
     private void deleteFiles(List<ProfileAttachVO> attachList) {
         if (attachList == null || attachList.size() == 0) {
             return;
@@ -388,7 +395,7 @@ public class MemberController {
                 log.error(e.getMessage());
             }
         });
-    }
+    } */
 
     //존재하는 유저 태그 삽입 & 존재하지 않는 태그 삽입
     @PostMapping(value = "oldUserTag.do")
@@ -405,10 +412,17 @@ public class MemberController {
     public ResponseEntity<TagVO> newTag(@RequestBody TagVO tagVO) {
         log.info("tagVO::" + tagVO);
 
-        service.newTag(tagVO);
-
-        //log.info("tagVO::" + tagVO);
-        return new ResponseEntity<TagVO>(tagVO, HttpStatus.OK);
+        TagVO resultTag = service.tagCheck(tagVO);
+        log.info(">>>>>>>>>"+resultTag);
+        if(resultTag==null) {
+        	service.newTag(tagVO);
+        	return new ResponseEntity<TagVO>(tagVO, HttpStatus.OK);
+        } else {
+        	resultTag = new TagVO();
+        	resultTag.setTags("fail");
+        	return new ResponseEntity<TagVO>(resultTag, HttpStatus.OK);	
+        }
+ 
     }
 
     //유저태그삭제(임시)
